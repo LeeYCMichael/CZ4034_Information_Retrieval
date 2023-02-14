@@ -1,0 +1,28 @@
+2023-01-26 12:44:42.593 INFO  (main) [] o.e.j.u.log Logging initialized @1345ms to org.eclipse.jetty.util.log.Slf4jLog
+2023-01-26 12:44:42.819 INFO  (main) [] o.e.j.s.Server jetty-9.4.48.v20220622; built: 2022-06-21T20:42:25.880Z; git: 6b67c5719d1f4371b33655ff2d047d24e171e49a; jvm 16.0.1+9-24
+2023-01-26 12:44:43.251 INFO  (main) [] o.a.s.s.CoreContainerProvider Using logger factory org.apache.logging.slf4j.Log4jLoggerFactory
+2023-01-26 12:44:43.260 INFO  (main) [] o.a.s.s.CoreContainerProvider  ___      _       Welcome to Apache Solr™ version 9.1.1
+2023-01-26 12:44:43.261 INFO  (main) [] o.a.s.s.CoreContainerProvider / __| ___| |_ _   Starting in standalone mode on port 8983
+2023-01-26 12:44:43.261 INFO  (main) [] o.a.s.s.CoreContainerProvider \__ \/ _ \ | '_|  Install dir: D:\Application_SetupFiles\solr-9.1.1\solr-9.1.1
+2023-01-26 12:44:43.261 INFO  (main) [] o.a.s.s.CoreContainerProvider |___/\___/_|_|    Start time: 2023-01-26T12:44:43.261729100Z
+2023-01-26 12:44:43.269 INFO  (main) [] o.a.s.s.CoreContainerProvider Solr Home: D:\Application_SetupFiles\solr-9.1.1\solr-9.1.1\server\solr (source: system property: solr.solr.home)
+2023-01-26 12:44:43.271 INFO  (main) [] o.a.s.c.SolrXmlConfig Loading solr.xml from D:\Application_SetupFiles\solr-9.1.1\solr-9.1.1\server\solr\solr.xml
+2023-01-26 12:44:43.327 INFO  (main) [] o.a.s.c.SolrResourceLoader Added 1 libs to classloader, from paths: [/D:/Application_SetupFiles/solr-9.1.1/solr-9.1.1/lib]
+2023-01-26 12:44:44.340 WARN  (main) [] o.a.s.u.StartupLoggingUtils Jetty request logging enabled. Will retain logs for last 3 days. See chapter "Configuring Logging" in reference guide for how to configure.
+2023-01-26 12:44:44.342 WARN  (main) [] o.a.s.c.CoreContainer Not all security plugins configured!  authentication=disabled authorization=disabled.  Solr is only as secure as you make it. Consider configuring authentication/authorization before exposing Solr to users internal or external.  See https://s.apache.org/solrsecurity for more info
+2023-01-26 12:44:44.519 INFO  (main) [] o.a.s.c.CorePropertiesLocator Found 0 core definitions underneath D:\Application_SetupFiles\solr-9.1.1\solr-9.1.1\server\solr
+2023-01-26 12:44:44.885 INFO  (main) [] o.e.j.s.h.ContextHandler Started o.e.j.w.WebAppContext@611f8234{/solr,file:///D:/Application_SetupFiles/solr-9.1.1/solr-9.1.1/server/solr-webapp/webapp/,AVAILABLE}{D:\Application_SetupFiles\solr-9.1.1\solr-9.1.1\server/solr-webapp/webapp}
+2023-01-26 12:44:44.894 INFO  (main) [] o.e.j.s.RequestLogWriter Opened D:\Application_SetupFiles\solr-9.1.1\solr-9.1.1\server\logs\2023_01_26.request.log
+2023-01-26 12:44:44.905 INFO  (main) [] o.e.j.s.AbstractConnector Started ServerConnector@6821ea29{HTTP/1.1, (http/1.1, h2c)}{127.0.0.1:8983}
+2023-01-26 12:44:44.905 INFO  (main) [] o.e.j.s.Server Started @3660ms
+2023-01-26 12:44:47.583 INFO  (qtp532885071-26) [] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json} status=0 QTime=75
+2023-01-26 15:29:32.840 INFO  (qtp532885071-40) [] o.a.s.c.TransientSolrCoreCacheDefault Allocating transient core cache for max 2147483647 cores with initial capacity of 1024
+2023-01-26 15:29:32.848 INFO  (qtp532885071-40) [] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1674746972781} status=0 QTime=14
+2023-01-26 15:29:32.912 INFO  (qtp532885071-22) [] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1674746972781} status=0 QTime=78
+2023-01-26 15:29:32.982 INFO  (qtp532885071-40) [] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1674746972781} status=0 QTime=64
+2023-01-26 15:31:03.330 INFO  (ShutdownMonitor) [] o.e.j.s.AbstractConnector Stopped ServerConnector@6821ea29{HTTP/1.1, (http/1.1, h2c)}{127.0.0.1:8983}
+2023-01-26 15:31:03.339 INFO  (ShutdownMonitor) [] o.a.s.c.CoreContainer Shutting down CoreContainer instance=204844842
+2023-01-26 15:31:03.344 INFO  (ShutdownMonitor) [] o.a.s.m.SolrMetricManager Closing metric reporters for registry=solr.node tag=null
+2023-01-26 15:31:03.357 INFO  (ShutdownMonitor) [] o.a.s.m.SolrMetricManager Closing metric reporters for registry=solr.jvm tag=null
+2023-01-26 15:31:03.367 INFO  (ShutdownMonitor) [] o.a.s.m.SolrMetricManager Closing metric reporters for registry=solr.jetty tag=null
+2023-01-26 15:31:03.385 INFO  (ShutdownMonitor) [] o.e.j.s.h.ContextHandler Stopped o.e.j.w.WebAppContext@611f8234{/solr,null,STOPPED}{D:\Application_SetupFiles\solr-9.1.1\solr-9.1.1\server/solr-webapp/webapp}
