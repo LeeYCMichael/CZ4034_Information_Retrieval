@@ -1,0 +1,57 @@
+2023-03-01 13:22:21.213 INFO  (main) [] o.e.j.u.log Logging initialized @1145ms to org.eclipse.jetty.util.log.Slf4jLog
+2023-03-01 13:22:21.438 INFO  (main) [] o.e.j.s.Server jetty-9.4.48.v20220622; built: 2022-06-21T20:42:25.880Z; git: 6b67c5719d1f4371b33655ff2d047d24e171e49a; jvm 16.0.1+9-24
+2023-03-01 13:22:21.979 INFO  (main) [] o.a.s.s.CoreContainerProvider Using logger factory org.apache.logging.slf4j.Log4jLoggerFactory
+2023-03-01 13:22:21.990 INFO  (main) [] o.a.s.s.CoreContainerProvider  ___      _       Welcome to Apache Solr™ version 9.1.1
+2023-03-01 13:22:21.990 INFO  (main) [] o.a.s.s.CoreContainerProvider / __| ___| |_ _   Starting in standalone mode on port 8983
+2023-03-01 13:22:21.991 INFO  (main) [] o.a.s.s.CoreContainerProvider \__ \/ _ \ | '_|  Install dir: D:\micha\Michael\GitHub\Michael_Lee\CZ4034_Information_Retrieval\backend\solr-9.1.1
+2023-03-01 13:22:21.991 INFO  (main) [] o.a.s.s.CoreContainerProvider |___/\___/_|_|    Start time: 2023-03-01T13:22:21.991008600Z
+2023-03-01 13:22:22.000 INFO  (main) [] o.a.s.s.CoreContainerProvider Solr Home: D:\micha\Michael\GitHub\Michael_Lee\CZ4034_Information_Retrieval\backend\solr-9.1.1\server\solr (source: system property: solr.solr.home)
+2023-03-01 13:22:22.002 INFO  (main) [] o.a.s.c.SolrXmlConfig Loading solr.xml from D:\micha\Michael\GitHub\Michael_Lee\CZ4034_Information_Retrieval\backend\solr-9.1.1\server\solr\solr.xml
+2023-03-01 13:22:22.060 INFO  (main) [] o.a.s.c.SolrResourceLoader Added 1 libs to classloader, from paths: [/D:/micha/Michael/GitHub/Michael_Lee/CZ4034_Information_Retrieval/backend/solr-9.1.1/lib]
+2023-03-01 13:22:23.007 WARN  (main) [] o.a.s.u.StartupLoggingUtils Jetty request logging enabled. Will retain logs for last 3 days. See chapter "Configuring Logging" in reference guide for how to configure.
+2023-03-01 13:22:23.009 WARN  (main) [] o.a.s.c.CoreContainer Not all security plugins configured!  authentication=disabled authorization=disabled.  Solr is only as secure as you make it. Consider configuring authentication/authorization before exposing Solr to users internal or external.  See https://s.apache.org/solrsecurity for more info
+2023-03-01 13:22:23.192 INFO  (main) [] o.a.s.c.CorePropertiesLocator Found 1 core definitions underneath D:\micha\Michael\GitHub\Michael_Lee\CZ4034_Information_Retrieval\backend\solr-9.1.1\server\solr
+2023-03-01 13:22:23.192 INFO  (main) [] o.a.s.c.CorePropertiesLocator Cores are: [movie_db]
+2023-03-01 13:22:23.195 INFO  (coreLoadExecutor-10-thread-1) [] o.a.s.c.TransientSolrCoreCacheDefault Allocating transient core cache for max 2147483647 cores with initial capacity of 1024
+2023-03-01 13:22:23.223 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.c.SolrConfig Using Lucene MatchVersion: 9.3.0
+2023-03-01 13:22:23.293 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.s.IndexSchema Schema name=default-config
+2023-03-01 13:22:23.314 WARN  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.D.s.SynonymFilterFactory Solr loaded a deprecated plugin/analysis class [solr.SynonymFilterFactory]. Please consult documentation how to replace it accordingly.
+2023-03-01 13:22:23.587 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.s.IndexSchema Loaded schema default-config/1.6 with uniqueid field id
+2023-03-01 13:22:23.592 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.c.CoreContainer Creating SolrCore 'movie_db' using configuration from instancedir D:\micha\Michael\GitHub\Michael_Lee\CZ4034_Information_Retrieval\backend\solr-9.1.1\server\solr\movie_db, trusted=true
+2023-03-01 13:22:23.631 INFO  (main) [] o.e.j.s.h.ContextHandler Started o.e.j.w.WebAppContext@791cbf87{/solr,file:///D:/micha/Michael/GitHub/Michael_Lee/CZ4034_Information_Retrieval/backend/solr-9.1.1/server/solr-webapp/webapp/,AVAILABLE}{D:\micha\Michael\GitHub\Michael_Lee\CZ4034_Information_Retrieval\backend\solr-9.1.1\server/solr-webapp/webapp}
+2023-03-01 13:22:23.633 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.c.SolrCore Opening new SolrCore at [D:\micha\Michael\GitHub\Michael_Lee\CZ4034_Information_Retrieval\backend\solr-9.1.1\server\solr\movie_db], dataDir=[D:\micha\Michael\GitHub\Michael_Lee\CZ4034_Information_Retrieval\backend\solr-9.1.1\server\solr\movie_db\data\]
+2023-03-01 13:22:23.640 INFO  (main) [] o.e.j.s.RequestLogWriter Opened D:\micha\Michael\GitHub\Michael_Lee\CZ4034_Information_Retrieval\backend\solr-9.1.1\server\logs\2023_03_01.request.log
+2023-03-01 13:22:23.651 INFO  (main) [] o.e.j.s.AbstractConnector Started ServerConnector@422c3c7a{HTTP/1.1, (http/1.1, h2c)}{127.0.0.1:8983}
+2023-03-01 13:22:23.651 INFO  (main) [] o.e.j.s.Server Started @3583ms
+2023-03-01 13:22:24.048 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.u.UpdateHandler Using UpdateLog implementation: org.apache.solr.update.UpdateLog
+2023-03-01 13:22:24.049 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.u.UpdateLog Initializing UpdateLog: dataDir= defaultSyncLevel=FLUSH numRecordsToKeep=100 maxNumLogsToKeep=10 numVersionBuckets=65536
+2023-03-01 13:22:24.063 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.u.CommitTracker Hard AutoCommit: if uncommitted for 15000ms; 
+2023-03-01 13:22:24.064 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.u.CommitTracker Soft AutoCommit: disabled
+2023-03-01 13:22:24.283 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.r.ManagedResourceStorage File-based storage initialized to use dir: D:\micha\Michael\GitHub\Michael_Lee\CZ4034_Information_Retrieval\backend\solr-9.1.1\server\solr\movie_db\conf
+2023-03-01 13:22:24.315 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.h.c.SpellCheckComponent Registering newSearcher listener for spellchecker: default
+2023-03-01 13:22:24.328 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.h.ReplicationHandler Commits will be reserved for 10000 ms
+2023-03-01 13:22:24.355 INFO  (searcherExecutor-12-thread-1-processing-movie_db) [ x:movie_db] o.a.s.c.QuerySenderListener QuerySenderListener done.
+2023-03-01 13:22:24.356 INFO  (searcherExecutor-12-thread-1-processing-movie_db) [ x:movie_db] o.a.s.h.c.SpellCheckComponent Loading spell index for spellchecker: default
+2023-03-01 13:22:24.369 INFO  (searcherExecutor-12-thread-1-processing-movie_db) [ x:movie_db] o.a.s.c.SolrCore Registered new searcher autowarm time: 0 ms
+2023-03-01 13:22:26.211 INFO  (qtp22004208-26) [] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json} status=0 QTime=57
+2023-03-01 13:22:33.488 INFO  (qtp22004208-27) [] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1677676953445} status=0 QTime=2
+2023-03-01 13:22:33.563 INFO  (qtp22004208-21) [] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1677676953445} status=0 QTime=77
+2023-03-01 13:22:33.664 INFO  (qtp22004208-19) [] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1677676953445} status=0 QTime=79
+2023-03-01 13:22:52.255 INFO  (qtp22004208-24) [] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1677676953445} status=0 QTime=0
+2023-03-01 13:22:52.262 INFO  (qtp22004208-20) [ x:movie_db] o.a.s.c.S.Request webapp=/solr path=/admin/luke params={numTerms=0&show=index&wt=json&_=1677676972232} status=0 QTime=5
+2023-03-01 13:22:52.281 INFO  (qtp22004208-19) [ x:movie_db] o.a.s.c.S.Request webapp=/solr path=/replication params={wt=json&command=details&_=1677676972232} status=0 QTime=19
+2023-03-01 13:22:52.295 INFO  (qtp22004208-24) [ x:movie_db] o.a.s.c.S.Request webapp=/solr path=/admin/ping params={action=status&wt=json&_=1677676953445&ts=1677676953445} status=503 QTime=4
+2023-03-01 13:22:52.414 INFO  (qtp22004208-27) [] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1677676953445} status=0 QTime=158
+2023-03-01 13:22:52.429 INFO  (qtp22004208-28) [ x:movie_db] o.a.s.c.S.Request webapp=/solr path=/admin/system params={wt=json&_=1677676972232} status=0 QTime=153
+2023-03-01 13:24:33.419 INFO  (qtp22004208-27) [] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1677676953445} status=0 QTime=0
+2023-03-01 13:24:33.428 INFO  (qtp22004208-21) [ x:movie_db] o.a.s.c.S.Request webapp=/solr path=/config/params params={wt=json&_=1677677073393} status=0 QTime=9
+2023-03-01 13:24:33.510 INFO  (qtp22004208-24) [] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1677676953445} status=0 QTime=91
+2023-03-01 13:52:42.563 INFO  (ShutdownMonitor) [] o.e.j.s.AbstractConnector Stopped ServerConnector@422c3c7a{HTTP/1.1, (http/1.1, h2c)}{127.0.0.1:8983}
+2023-03-01 13:52:42.570 INFO  (ShutdownMonitor) [] o.a.s.c.CoreContainer Shutting down CoreContainer instance=1081635795
+2023-03-01 13:52:42.574 INFO  (coreCloseExecutor-18-thread-1) [ x:movie_db] o.a.s.c.SolrCore CLOSING SolrCore org.apache.solr.core.SolrCore@4ee444da movie_db
+2023-03-01 13:52:42.574 INFO  (coreCloseExecutor-18-thread-1) [ x:movie_db] o.a.s.m.SolrMetricManager Closing metric reporters for registry=solr.core.movie_db tag=SolrCore@4ee444da
+2023-03-01 13:52:42.600 INFO  (coreCloseExecutor-18-thread-1) [ x:movie_db] o.a.s.u.DirectUpdateHandler2 Committing on IndexWriter.close()  ... SKIPPED (unnecessary).
+2023-03-01 13:52:42.615 INFO  (ShutdownMonitor) [] o.a.s.m.SolrMetricManager Closing metric reporters for registry=solr.node tag=null
+2023-03-01 13:52:42.626 INFO  (ShutdownMonitor) [] o.a.s.m.SolrMetricManager Closing metric reporters for registry=solr.jvm tag=null
+2023-03-01 13:52:42.632 INFO  (ShutdownMonitor) [] o.a.s.m.SolrMetricManager Closing metric reporters for registry=solr.jetty tag=null
+2023-03-01 13:52:42.650 INFO  (ShutdownMonitor) [] o.e.j.s.h.ContextHandler Stopped o.e.j.w.WebAppContext@791cbf87{/solr,null,STOPPED}{D:\micha\Michael\GitHub\Michael_Lee\CZ4034_Information_Retrieval\backend\solr-9.1.1\server/solr-webapp/webapp}
