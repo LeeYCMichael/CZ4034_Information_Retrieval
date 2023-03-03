@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import { useHttpClient } from './hook';
 import { useState, useEffect} from "react";
-import { Card, Button, Input, List, Typography, Row, Image } from 'antd';
+import { Card, Input, List, Image, Button } from 'antd';
 import moviePicture from "./pictures/moviePicture.png";
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
 
   const fetchSolrData = async (searchTerm) => {
 
-    let url = "http://localhost:8983/solr/movie_db/spell?indent=true&q.op=OR&rows=20&useParams=&q=body:" + searchTerm //+ "%22"; //'//"body%3Atoys%20body%3Astory"
+    let url = "http://localhost:8983/solr/movie_db/spell?indent=true&q.op=OR&rows=20&useParams=&q=body:(" + searchTerm + ")" //+ "%22"; //'//"body%3Atoys%20body%3Astory"
     
     // const searchTermArray = searchTerm.split(" ");
     // let i = 0;
@@ -37,7 +37,7 @@ const onSearch = (searchTerm) => {
     setSolrData(data.response);
     setSpellCheck(data.spellcheck.collations);
     console.log(data.response.docs);
-    console.log(SpellCheck[3].collationQuery)
+    //console.log(SpellCheck[3].collationQuery)
   });
  }
 
@@ -51,49 +51,48 @@ useEffect(() => {
 
   return (
     <div className="App" >
-
-      <h1>Movies</h1>
       
       <Image
-      width={500}
+      style={{paddingTop: 30, borderRadius: 40}}
+      width={555}
       preview = {false}
       src={moviePicture}
       />
 
-      <div style={{paddingTop: 25}}> 
-        <Search placeholder="input search text" style={{ width: 304 }} value={searchInput} onChange={onChange} onSearch={() => onSearch(searchInput)} enterButton />
-      </div>
-
-      <br/>
-
+      <h1 style={{fontSize: 60}}>Movies</h1>
       <div > 
-      <text> {(SpellCheck == '') ? ' ' : "Did you mean " + SpellCheck[3].collationQuery.slice(5, )  } </text>
+        <Search placeholder="input search text" style={{ width: 700, }} value={searchInput} onChange={onChange} onSearch={() => onSearch(searchInput)} enterButton />
       </div>
-
       <br/>
-
       <div > 
-        <List
-          dataSource={SolrData.docs}
-          renderItem={(item) => (
-            <Card style={{width: "50%"}}>
-
-              <div style={{flexDirection: "column"}}> 
+        <Button style={{width: 250}}> {(SolrData.numFound < 5) ?  (SpellCheck.length == 0 && searchInput != "") ? "Found what you were looking for?" : "Did you mean " + SpellCheck[1].collationQuery.slice(5, ).replace("(", "").replace(")", "") : "Found what you were looking for?"  }</Button> 
+      </div>
+      
+      <List
+        style={{ marginTop: 50, }}
+        dataSource={SolrData.docs}
+        renderItem={(item) => (
+         <div > 
+            <Card style={{width: 900, textAlign: "left", backgroundColor: '#000000', color: '#ffffff'}}>
+              <div style={{display: 'flex', flexDirection: "column"}}> 
                 <text> Movie name: {item.movie_name} </text>
                 <text> Genres: {item.genre} </text>
                 <text> Author: {item.author} </text>
               </div>
-            
-                <p> {item.body} </p>
-
-                <div style={{flexDirection: "column"}}> 
-                  <text> {item.senticSubjectivity} </text>
-                  <text> {item.senticSentiment} </text>
-                </div>
+              <hr  style={{color: '#ffffff',backgroundColor: '#ffffff',  borderColor : '#ffffff'}}/>
+              <p> {item.body} </p>
+              <hr  style={{color: '#ffffff',backgroundColor: '#ffffff',  borderColor : '#ffffff'}}/>
+              <div style={{display: 'flex', flexDirection: "row", gap: 10}}> 
+                <text > Sentiment: </text>
+                <text > {item.senticSubjectivity} </text>
+                <text > {item.senticSentiment} </text>
+              </div>
             </Card>
-          )}
-          />
-        </div>
+            <br/>
+          </div>
+        )}
+      />
+
     </div>
   );
 }
