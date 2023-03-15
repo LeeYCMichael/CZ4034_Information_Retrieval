@@ -2,7 +2,17 @@ import logo from "./logo.svg";
 import "./App.css";
 import { useHttpClient } from "./hook";
 import { useState, useEffect } from "react";
-import { Card, Input, List, Image, Button, Select } from "antd";
+import {
+  Card,
+  Input,
+  List,
+  Image,
+  Button,
+  Select,
+  Tag,
+  Typography,
+  Space,
+} from "antd";
 import moviePicture from "./pictures/moviePicture.png";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
@@ -20,6 +30,7 @@ function App() {
   const [ShowAdvancedSearch, setShowAdvancedSearch] = useState(0); // flag for showing advanced search
 
   const { Search } = Input;
+  const { Text } = Typography;
 
   // fetches reddit comments based on users search
   const fetchSolrData = async (searchTerm, movieName) => {
@@ -119,7 +130,7 @@ function App() {
       <h1 style={{ fontSize: 60, marginTop: 20 }}>Movies</h1>
 
       <Search
-        placeholder="input search text"
+        placeholder="Input Search Text"
         style={{ width: 500 }}
         value={searchInput}
         onChange={onChange}
@@ -127,7 +138,7 @@ function App() {
         enterButton
       />
 
-      {QueryTime >= 0 ? <text> Query took {QueryTime} </text> : <> </>}
+      {QueryTime >= 0 ? <text> Query took {QueryTime}ms </text> : <> </>}
 
       <text style={{ width: 250, padding: 10 }}>
         {" "}
@@ -148,7 +159,7 @@ function App() {
         onClick={() => toggleAdvancedSearch()}
       >
         {" "}
-        Advanced search{" "}
+        Advanced Search{" "}
       </Button>
 
       {ShowAdvancedSearch ? (
@@ -176,14 +187,39 @@ function App() {
               style={{
                 width: 800,
                 textAlign: "left",
-                backgroundColor: "#000000",
-                color: "#ffffff",
+                // backgroundColor: "#000000",
+                // color: "#ffffff",
               }}
             >
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                <text> Movie name: {item.movie_name} </text>
-                <text> Genres: {item.genre} </text>
-                <text> Author: {item.author} </text>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ flex: 1, textAlign: "center" }}>
+                  <Text>Movie Name</Text>
+                  <br />
+                  <Text strong style={{ fontSize: "20px" }}>
+                    {item.movie_name}
+                  </Text>
+                </Text>
+
+                <Text style={{ flex: 1, textAlign: "center" }}>
+                  <Text>Genres</Text>
+                  <br />
+                  <Text strong style={{ fontSize: "18px" }}>
+                    {item.genre}
+                  </Text>
+                </Text>
+                <Text style={{ flex: 1, textAlign: "center" }}>
+                  <Text>Author</Text>
+                  <br />
+                  <Text strong style={{ fontSize: "18px" }}>
+                    {item.author ? item.author : "N/A"}
+                  </Text>
+                </Text>
               </div>
               <hr
                 style={{
@@ -202,8 +238,17 @@ function App() {
               />
               <div style={{ display: "flex", flexDirection: "row", gap: 10 }}>
                 <text> Sentiment: </text>
-                <text> {item.senticSubjectivity} </text>
-                <text> {item.senticSentiment} </text>
+
+                {item.senticSubjectivity[0] === "SUBJECTIVE" ? (
+                  <Tag color="cyan">SUBJECTIVE</Tag>
+                ) : (
+                  <Tag color="purple">AMBIVALENT</Tag>
+                )}
+                {item.senticSentiment[0] === "POSITIVE" ? (
+                  <Tag color="green">POSITIVE</Tag>
+                ) : (
+                  <Tag color="red">NEGATIVE</Tag>
+                )}
               </div>
             </Card>
             <br />
