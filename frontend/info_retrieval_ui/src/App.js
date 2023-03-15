@@ -25,6 +25,7 @@ function App() {
   const [FacetFields, setFacetFields] = useState([]); // statistics of sentiments and polarity
   const [QueryTime, setQueryTime] = useState(-1); // time from query to return
   const [MovieList, setMovieList] = useState(""); // list of movies in database
+  const [ResultCount, setResultCount] = useState(0);
   const [searchInput, setSearchInput] = useState(""); // search bar input
   const [MovieNameInput, setMovieNameInput] = useState("*"); // movie name selection (for advanced search)
   const [ShowAdvancedSearch, setShowAdvancedSearch] = useState(0); // flag for showing advanced search
@@ -86,6 +87,7 @@ function App() {
       setSpellCheck(data.spellcheck.collations);
       setFacetFields(data.facet_counts.facet_fields);
       setQueryTime(data.responseHeader.QTime);
+      setResultCount(data.response.numFound);
       console.log("Response", data.response.docs);
       console.log("Spellcheck", SpellCheck);
       console.log("Facets", FacetFields);
@@ -118,6 +120,27 @@ function App() {
     console.log(`Selected: ${value}`);
   };
 
+  const getSuggestion = () => {
+    if (SolrData.numFound < 5) {
+      if (SpellCheck.length === 0) {
+        return "";
+      } else {
+        const suggestion = SpellCheck[1].collationQuery
+          .slice(5)
+          .replace("(", "")
+          .replace(")", "")
+          .split("movie_name")[0];
+        return suggestion;
+      }
+    } else {
+      return "";
+    }
+  };
+
+  const handleTextClick = (suggestion) => {
+    setSearchInput(suggestion);
+    onSearch(suggestion, MovieNameInput);
+  };
   return (
     <div className="App">
       <Image
@@ -130,29 +153,41 @@ function App() {
       <h1 style={{ fontSize: 60, marginTop: 20 }}>Movies</h1>
 
       <Search
-        placeholder="Input Search Text"
-        style={{ width: 500 }}
+        placeholder="Search.."
+        style={{ width: 800 }}
         value={searchInput}
         onChange={onChange}
         onSearch={() => onSearch(searchInput, MovieNameInput)}
         enterButton
+        allowClear
       />
 
-      {QueryTime >= 0 ? <text> Query took {QueryTime}ms </text> : <> </>}
+      <br />
 
-      <text style={{ width: 250, padding: 10 }}>
-        {" "}
-        {SolrData.numFound < 5
-          ? SpellCheck.length == 0
-            ? ""
-            : "Did you mean " +
-              SpellCheck[1].collationQuery
-                .slice(5)
-                .replace("(", "")
-                .replace(")", "")
-                .split("movie_name")[0]
-          : ""}
-      </text>
+      {QueryTime >= 0 ? (
+        <text>
+          {ResultCount == 1
+            ? `${ResultCount} result (${QueryTime}ms)`
+            : `${ResultCount} results (${QueryTime}ms)`}
+        </text>
+      ) : (
+        <> </>
+      )}
+
+      {getSuggestion() ? (
+        <Button
+          type="link"
+          block
+          onClick={() => {
+            const suggestion = getSuggestion();
+            handleTextClick(suggestion);
+          }}
+        >
+          Did you mean {getSuggestion()}?
+        </Button>
+      ) : (
+        <br />
+      )}
 
       <Button
         style={{ marginBottom: 10 }}
