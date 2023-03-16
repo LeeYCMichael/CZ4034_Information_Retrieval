@@ -95,7 +95,7 @@ print("Subjectivity Acc: ", accuracy_score(df_TB_labelled["subjectivity"],
 print("Subjectivity Acc %: ", accuracy_score(df_TB_labelled["subjectivity"],
                                              df_TB_labelled["TB_Subjectivity"]))
 
-df_temp = df_TB_labelled[(df_TB_labelled['subjectivity']==1) & ((df['polarity']==0) | (df['polarity']==1))]
+df_temp = df_TB_labelled[(df_TB_labelled['subjectivity']==1) & ((df_TB_labelled['polarity']==0) | (df_TB_labelled['polarity']==1))]
 
 print("Polarity Acc: ", accuracy_score(df_temp["polarity"],
                                        df_temp["TB_Polarity"],
