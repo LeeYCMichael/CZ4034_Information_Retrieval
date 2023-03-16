@@ -23,8 +23,7 @@ print("Relevance count (initial):")
 print(df["relevance"].value_counts())
 print(df["relevance"].value_counts(normalize=True), "\n")
 
-df_drop_useless = df[df['relevance']==0]
-#df = df.dropna(subset=['subjectivity', 'polarity', 'relevance'])
+df_drop_useless = df[df['relevance']!=1]
 df_drop_useless = df_drop_useless.dropna(subset=['subjectivity'])
 
 print("Subjectivity count (aft drop useless data):")
