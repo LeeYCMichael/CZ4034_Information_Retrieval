@@ -30,9 +30,12 @@ print("Subjectivity count (aft drop useless data):")
 print(df_drop_useless["subjectivity"].value_counts())
 print(df_drop_useless["subjectivity"].value_counts(normalize=True), "\n")
 
+df_drop_subj = df_drop_useless[df_drop_useless['subjectivity']==1]
+df_drop_subj = df_drop_subj[(df_drop_subj['polarity']==0)|(df_drop_subj['polarity']==1)]
+
 print("Polarity count (aft drop useless data):")
-print(df_drop_useless["polarity"].value_counts())
-print(df_drop_useless["polarity"].value_counts(normalize=True), "\n")
+print(df_drop_subj["polarity"].value_counts())
+print(df_drop_subj["polarity"].value_counts(normalize=True), "\n")
 
 print("Relevance count (aft drop useless data):")
 print(df_drop_useless["relevance"].value_counts())
@@ -52,12 +55,12 @@ def sentiment_analysis(data):
             return 1 #‘Subjective’
 
     #Create a function to get the polarity
-    def getPolarity(polarity, text):
-        if  polarity == 1 or polarity == 0:
+    def getPolarity(subj, pol, text):
+        if subj == 1 and (pol == 1 or pol == 0):
             return TextBlob(text).sentiment.polarity
 
-    def getPolAnalysis(polarity, score):
-       if polarity == 1 or polarity == 0:
+    def getPolAnalysis(subj, pol, score):
+       if subj == 1 and (pol == 1 or pol == 0):
             if score <= 0:
                 return 0 #‘Negative’
             elif score > 0.3:
@@ -68,8 +71,8 @@ def sentiment_analysis(data):
     data['TB_Subj_Score'] = data['body'].apply(getSubjectivity)
     data['TB_Subjectivity'] = data['TB_Subj_Score'].apply(getSubjAnalysis)
 
-    data['TB_Pol_Score'] = data.apply(lambda x: getPolarity(x['polarity'], x['body']), axis=1)
-    data['TB_Polarity'] = data.apply(lambda x: getPolAnalysis(x['polarity'], x['TB_Pol_Score']), axis=1)
+    data['TB_Pol_Score'] = data.apply(lambda x: getPolarity(x['subjectivity'], x['polarity'], x['body']), axis=1)
+    data['TB_Polarity'] = data.apply(lambda x: getPolAnalysis(x['subjectivity'], x['polarity'], x['TB_Pol_Score']), axis=1)
 
     return data
 
@@ -92,7 +95,7 @@ print("Subjectivity Acc: ", accuracy_score(df_TB_labelled["subjectivity"],
 print("Subjectivity Acc %: ", accuracy_score(df_TB_labelled["subjectivity"],
                                              df_TB_labelled["TB_Subjectivity"]))
 
-df_temp = df_TB_labelled[(df_TB_labelled['polarity']==0)|(df_TB_labelled['polarity']==1)]
+df_temp = df_TB_labelled[(df_TB_labelled['subjectivity']==1) & ((df['polarity']==0) | (df['polarity']==1))]
 
 print("Polarity Acc: ", accuracy_score(df_temp["polarity"],
                                        df_temp["TB_Polarity"],
@@ -100,8 +103,8 @@ print("Polarity Acc: ", accuracy_score(df_temp["polarity"],
 print("Polarity Acc %: ", accuracy_score(df_temp["polarity"],
                                          df_temp["TB_Polarity"]))
 
-df_temp_1 = df_TB_labelled[df_TB_labelled['polarity']==0]
-df_temp_2 = df_TB_labelled[df_TB_labelled['polarity']==1]
+df_temp_1 = df_TB_labelled[(df_TB_labelled['polarity']==0) & (df_TB_labelled['subjectivity']==1)]
+df_temp_2 = df_TB_labelled[(df_TB_labelled['polarity']==1) & (df_TB_labelled['subjectivity']==1)]
 df_temp_2["polarity"].replace(1, 2, inplace=True)
 
 print("Polarity Acc % (neg): ", accuracy_score(df_temp_1["polarity"],
