@@ -61,7 +61,7 @@ function App() {
     const movies = [
       {
         value: "*",
-        label: "None",
+        label: "Select a Movie",
       },
     ];
     for (let i = 0; i < response.response.docs.length; i++) {
@@ -152,15 +152,41 @@ function App() {
 
       <h1 style={{ fontSize: 60, marginTop: 20 }}>Movies</h1>
 
-      <Search
-        placeholder="Search.."
-        style={{ width: 800 }}
-        value={searchInput}
-        onChange={onChange}
-        onSearch={() => onSearch(searchInput, MovieNameInput)}
-        enterButton
-        allowClear
-      />
+      <div style={{ display: "flex", width: 800, gap: 10 }}>
+        <Search
+          placeholder="Search.."
+          style={{ flexGrow: 2 }}
+          value={searchInput}
+          onChange={onChange}
+          onSearch={() => onSearch(searchInput, MovieNameInput)}
+          enterButton
+          allowClear
+        />
+        <Button
+          style={{ marginBottom: 10, width: 200, flexGrow: 1 }}
+          onClick={() => toggleAdvancedSearch()}
+          type="primary"
+        >
+          Advanced Search
+        </Button>
+      </div>
+
+      {ShowAdvancedSearch ? (
+        <Select
+          style={{ width: 800 }}
+          showSearch
+          bordered
+          allowClear
+          placeholder="Movie name"
+          value={MovieNameInput}
+          onClear={() => setMovieNameInput("*")}
+          onChange={handleChange}
+          options={MovieList}
+          enterButton
+        />
+      ) : (
+        <></>
+      )}
 
       <br />
 
@@ -189,30 +215,6 @@ function App() {
         <br />
       )}
 
-      <Button
-        style={{ marginBottom: 10 }}
-        onClick={() => toggleAdvancedSearch()}
-      >
-        {" "}
-        Advanced Search{" "}
-      </Button>
-
-      {ShowAdvancedSearch ? (
-        <Select
-          style={{ width: 200 }}
-          showSearch
-          bordered
-          allowClear
-          placeholder="Movie name"
-          value={MovieNameInput}
-          onClear={() => setMovieNameInput("*")}
-          onChange={handleChange}
-          options={MovieList}
-        />
-      ) : (
-        <></>
-      )}
-
       <List
         style={{ marginTop: 30 }}
         dataSource={SolrData.docs}
@@ -222,8 +224,6 @@ function App() {
               style={{
                 width: 800,
                 textAlign: "left",
-                // backgroundColor: "#000000",
-                // color: "#ffffff",
               }}
             >
               <div
@@ -244,14 +244,14 @@ function App() {
                 <Text style={{ flex: 1, textAlign: "center" }}>
                   <Text>Genres</Text>
                   <br />
-                  <Text strong style={{ fontSize: "18px" }}>
+                  <Text strong style={{ fontSize: "20px" }}>
                     {item.genre}
                   </Text>
                 </Text>
                 <Text style={{ flex: 1, textAlign: "center" }}>
                   <Text>Author</Text>
                   <br />
-                  <Text strong style={{ fontSize: "18px" }}>
+                  <Text strong style={{ fontSize: "20px" }}>
                     {item.author ? item.author : "N/A"}
                   </Text>
                 </Text>
