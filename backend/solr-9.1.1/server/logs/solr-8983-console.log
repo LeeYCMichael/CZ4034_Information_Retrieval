@@ -2,10 +2,10 @@ Java HotSpot(TM) 64-Bit Server VM warning: -XX:+UseLargePages not supported in t
 CompileCommand: exclude com/github/benmanes/caffeine/cache/BoundedLocalCache.put bool exclude = true
 WARNING: A command line option has enabled the Security Manager
 WARNING: The Security Manager is deprecated and will be removed in a future release
-2023-03-15 11:09:12.396 INFO  (main) [] o.e.j.u.log Logging initialized @878ms to org.eclipse.jetty.util.log.Slf4jLog
-2023-03-15 11:09:12.571 INFO  (main) [] o.e.j.s.Server jetty-9.4.48.v20220622; built: 2022-06-21T20:42:25.880Z; git: 6b67c5719d1f4371b33655ff2d047d24e171e49a; jvm 18.0.2.1+1-1
-2023-03-15 11:09:12.893 INFO  (main) [] o.a.s.s.CoreContainerProvider Using logger factory org.apache.logging.slf4j.Log4jLoggerFactory
-2023-03-15 11:09:12.901 INFO  (main) [] o.a.s.s.CoreContainerProvider  ___      _       Welcome to Apache Solr™ version 9.1.1
-2023-03-15 11:09:12.901 INFO  (main) [] o.a.s.s.CoreContainerProvider / __| ___| |_ _   Starting in standalone mode on port 8983
-2023-03-15 11:09:12.901 INFO  (main) [] o.a.s.s.CoreContainerProvider \__ \/ _ \ | '_|  Install dir: /Users/QianYi/Documents/GitHub/CZ4034_Information_Retrieval/backend/solr-9.1.1
-2023-03-15 11:09:12.901 INFO  (main) [] o.a.s.s.CoreContainerProvider |___/\___/_|_|    Start time: 2023-03-15T11:09:12.901900Z
+2023-03-22 12:31:05.908 INFO  (main) [] o.e.j.u.log Logging initialized @1046ms to org.eclipse.jetty.util.log.Slf4jLog
+2023-03-22 12:31:06.086 INFO  (main) [] o.e.j.s.Server jetty-9.4.48.v20220622; built: 2022-06-21T20:42:25.880Z; git: 6b67c5719d1f4371b33655ff2d047d24e171e49a; jvm 18.0.2.1+1-1
+2023-03-22 12:31:06.375 INFO  (main) [] o.a.s.s.CoreContainerProvider Using logger factory org.apache.logging.slf4j.Log4jLoggerFactory
+2023-03-22 12:31:06.382 INFO  (main) [] o.a.s.s.CoreContainerProvider  ___      _       Welcome to Apache Solr™ version 9.1.1
+2023-03-22 12:31:06.382 INFO  (main) [] o.a.s.s.CoreContainerProvider / __| ___| |_ _   Starting in standalone mode on port 8983
+2023-03-22 12:31:06.382 INFO  (main) [] o.a.s.s.CoreContainerProvider \__ \/ _ \ | '_|  Install dir: /Users/QianYi/Documents/GitHub/CZ4034_Information_Retrieval/backend/solr-9.1.1
+2023-03-22 12:31:06.383 INFO  (main) [] o.a.s.s.CoreContainerProvider |___/\___/_|_|    Start time: 2023-03-22T12:31:06.383040Z
