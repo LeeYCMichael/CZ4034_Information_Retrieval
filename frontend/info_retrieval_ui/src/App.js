@@ -16,6 +16,7 @@ import {
 import moviePicture from "./pictures/moviePicture.png";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function App() {
@@ -29,6 +30,11 @@ function App() {
   const [searchInput, setSearchInput] = useState(""); // search bar input
   const [MovieNameInput, setMovieNameInput] = useState("*"); // movie name selection (for advanced search)
   const [ShowAdvancedSearch, setShowAdvancedSearch] = useState(0); // flag for showing advanced search
+  const [PushshiftData, setPushshiftData] = useState([]); // list of data from pushshift api
+  const [ApiMovieSearch, setApiMovieSearch] = useState(""); // movie name search input (for crawling data from pushshift api)
+  const [ShowPushshiftSearch, setShowPushshiftSearch] = useState(0); // flag for showing pushshift search
+  const [ApiMovieName, setApiMovieName] = useState(""); // movie name search input (for crawling data from pushshift api)
+  const [isApiLoading, setIsApiLoading] = useState(false); //  isApiLoading state for search bar
 
   const { Search } = Input;
   const { Text } = Typography;
@@ -80,19 +86,57 @@ function App() {
     return response;
   };
 
+  // fetches pushshift data with searched movie term
+  const fetchPushshiftData = async (apiMovieSearch) => {
+    const base_url =
+      "https://api.pushshift.io/reddit/search/comment/?subreddit=movies&score=2";
+    const payload = {
+      q: apiMovieSearch,
+      after: "365d",
+      size: "10",
+      aggs: "aggs",
+    };
+    const response = await fetch(`${base_url}&${new URLSearchParams(payload)}`);
+    const json = await response.json();
+    return json.data;
+  };
+
   // calls fetching of reddit comments upon clicking search icon
   const onSearch = (searchTerm, movieName) => {
-    const solrData = fetchSolrData(searchTerm, movieName).then((data) => {
-      setSolrData(data.response);
-      setSpellCheck(data.spellcheck.collations);
-      setFacetFields(data.facet_counts.facet_fields);
-      setQueryTime(data.responseHeader.QTime);
-      setResultCount(data.response.numFound);
-      console.log("Response", data.response.docs);
-      console.log("Spellcheck", SpellCheck);
-      console.log("Facets", FacetFields);
-      console.log("Query Time", QueryTime);
-    });
+    if (searchTerm == "") {
+      setSolrData([]);
+      setQueryTime(-1);
+    } else {
+      const solrData = fetchSolrData(searchTerm, movieName).then((data) => {
+        setSolrData(data.response);
+        setSpellCheck(data.spellcheck.collations);
+        setFacetFields(data.facet_counts.facet_fields);
+        setQueryTime(data.responseHeader.QTime);
+        setResultCount(data.response.numFound);
+        console.log("Response", data.response.docs);
+        console.log("Spellcheck", SpellCheck);
+        console.log("Facets", FacetFields);
+        console.log("Query Time", QueryTime);
+      });
+    }
+  };
+
+  // calls fetching of pushshift api data upon clicking search icon
+  const onApiSearch = async (ApiMovieSearch) => {
+    if (ApiMovieSearch === "") {
+      setPushshiftData([]);
+      setApiMovieName("");
+    } else {
+      setIsApiLoading(true);
+      const data = await fetchPushshiftData(ApiMovieSearch);
+      setIsApiLoading(false);
+
+      console.log("onapisearch: ", data);
+      const capitalizedMovieName =
+        ApiMovieSearch.charAt(0).toUpperCase() + ApiMovieSearch.slice(1);
+      setApiMovieName(capitalizedMovieName);
+      setPushshiftData(data);
+    }
   };
 
   // updates search bar
@@ -100,12 +144,26 @@ function App() {
     setSearchInput(e.target.value);
   };
 
+  // updates api search bar
+  const onApiSearchChange = (e) => {
+    setApiMovieSearch(e.target.value);
+  };
+
   // button to toggle advanced search (by movie name so far)
   const toggleAdvancedSearch = () => {
     setShowAdvancedSearch(!ShowAdvancedSearch);
+    setShowPushshiftSearch(0);
+
     fetchMovieData();
     setMovieNameInput("*");
+
     //console.log("Advanced search:", ShowAdvancedSearch);
+  };
+
+  // button to toggle pushshift search
+  const togglePushshiftSearch = () => {
+    setShowPushshiftSearch(!ShowPushshiftSearch);
+    setShowAdvancedSearch(0);
   };
 
   // updates advanced search:movie_name
@@ -141,6 +199,7 @@ function App() {
     setSearchInput(suggestion);
     onSearch(suggestion, MovieNameInput);
   };
+
   return (
     <div className="App">
       <Image
@@ -151,46 +210,83 @@ function App() {
       />
 
       <h1 style={{ fontSize: 60, marginTop: 20 }}>Movies</h1>
-
-      <div style={{ display: "flex", width: 800, gap: 10 }}>
+      {ShowPushshiftSearch ? (
+        <></>
+      ) : (
         <Search
           placeholder="Search.."
-          style={{ flexGrow: 2 }}
+          style={{ width: 800 }}
           value={searchInput}
           onChange={onChange}
           onSearch={() => onSearch(searchInput, MovieNameInput)}
           enterButton
           allowClear
         />
-        <Button
-          style={{ marginBottom: 10, width: 200, flexGrow: 1 }}
-          onClick={() => toggleAdvancedSearch()}
-          type="primary"
-        >
-          Advanced Search
-        </Button>
-      </div>
-
-      {ShowAdvancedSearch ? (
-        <Select
-          style={{ width: 800 }}
-          showSearch
-          bordered
-          allowClear
-          placeholder="Movie name"
-          value={MovieNameInput}
-          onClear={() => setMovieNameInput("*")}
-          onChange={handleChange}
-          options={MovieList}
-          enterButton
-        />
-      ) : (
-        <></>
       )}
 
       <br />
 
-      {QueryTime >= 0 ? (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          width: 800,
+          gap: 2,
+        }}
+      >
+        <div style={{ display: "flex" }}>
+          <Button
+            style={{ marginBottom: 10, flex: 1 }}
+            onClick={() => toggleAdvancedSearch()}
+            type={ShowAdvancedSearch ? "primary" : "link"}
+          >
+            Advanced Search
+          </Button>
+          <Button
+            style={{ marginBottom: 10, flex: 1 }}
+            onClick={() => togglePushshiftSearch()}
+            type={ShowPushshiftSearch ? "primary" : "link"}
+          >
+            Crawl Pushshift Data
+          </Button>
+        </div>
+        <div style={{ display: "flex" }}>
+          {ShowAdvancedSearch ? (
+            <Select
+              style={{ marginBottom: 10, flex: 1 }}
+              showSearch
+              bordered
+              allowClear
+              placeholder="Movie name"
+              value={MovieNameInput}
+              onClear={() => setMovieNameInput("*")}
+              onChange={handleChange}
+              options={MovieList}
+              enterButton
+            />
+          ) : (
+            <div style={{ flex: 1 }}></div>
+          )}
+
+          {ShowPushshiftSearch ? (
+            <Search
+              placeholder="Search Movie Name from API.."
+              style={{ marginBottom: 10, flex: 1 }}
+              value={ApiMovieSearch}
+              onChange={onApiSearchChange}
+              onSearch={() => onApiSearch(ApiMovieSearch)}
+              loading={isApiLoading}
+              allowClear
+            />
+          ) : (
+            <div style={{ flex: 1 }}></div>
+          )}
+        </div>
+      </div>
+
+      <br />
+
+      {QueryTime >= 0 && !ShowPushshiftSearch ? (
         <text>
           {ResultCount == 1
             ? `${ResultCount} result (${QueryTime}ms)`
@@ -200,7 +296,7 @@ function App() {
         <> </>
       )}
 
-      {getSuggestion() ? (
+      {getSuggestion() && !ShowPushshiftSearch ? (
         <Button
           type="link"
           block
@@ -215,81 +311,151 @@ function App() {
         <br />
       )}
 
-      <List
-        style={{ marginTop: 30 }}
-        dataSource={SolrData.docs}
-        renderItem={(item) => (
-          <div>
-            <Card
-              style={{
-                width: 800,
-                textAlign: "left",
-              }}
-            >
-              <div
+      {ShowPushshiftSearch && ApiMovieName ? (
+        <>
+          <Text strong style={{ fontSize: "20px", color: "white" }}>
+            Crawled 10 Comments about {ApiMovieName} from Pushshift API
+          </Text>
+
+          <List
+            style={{ marginTop: 30 }}
+            dataSource={PushshiftData}
+            renderItem={(item) => (
+              <div>
+                <Card
+                  style={{
+                    width: 800,
+                    textAlign: "left",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Text style={{ flex: 1, textAlign: "center" }}>
+                      <Text>Searched Term</Text>
+                      <br />
+                      <Text strong style={{ fontSize: "20px" }}>
+                        {ApiMovieName}
+                      </Text>
+                    </Text>
+
+                    <Text style={{ flex: 1, textAlign: "center" }}>
+                      <Text>Date</Text>
+                      <br />
+                      <Text strong style={{ fontSize: "20px" }}>
+                        {item.utc_datetime_str}
+                      </Text>
+                    </Text>
+                    <Text style={{ flex: 1, textAlign: "center" }}>
+                      <Text>Author</Text>
+                      <br />
+                      <Text strong style={{ fontSize: "20px" }}>
+                        {item.author ? item.author : "N/A"}
+                      </Text>
+                    </Text>
+                  </div>
+                  <hr
+                    style={{
+                      color: "#ffffff",
+                      backgroundColor: "#ffffff",
+                      borderColor: "#ffffff",
+                    }}
+                  />
+                  <p> {item.body} </p>
+                  <hr
+                    style={{
+                      color: "#ffffff",
+                      backgroundColor: "#ffffff",
+                      borderColor: "#ffffff",
+                    }}
+                  />
+                </Card>
+                <br />
+              </div>
+            )}
+          />
+        </>
+      ) : (
+        <List
+          style={{ marginTop: 30 }}
+          dataSource={SolrData.docs}
+          renderItem={(item) => (
+            <div>
+              <Card
                 style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
+                  width: 800,
+                  textAlign: "left",
                 }}
               >
-                <Text style={{ flex: 1, textAlign: "center" }}>
-                  <Text>Movie Name</Text>
-                  <br />
-                  <Text strong style={{ fontSize: "20px" }}>
-                    {item.movie_name}
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={{ flex: 1, textAlign: "center" }}>
+                    <Text>Movie Name</Text>
+                    <br />
+                    <Text strong style={{ fontSize: "20px" }}>
+                      {item.movie_name}
+                    </Text>
                   </Text>
-                </Text>
 
-                <Text style={{ flex: 1, textAlign: "center" }}>
-                  <Text>Genres</Text>
-                  <br />
-                  <Text strong style={{ fontSize: "20px" }}>
-                    {item.genre}
+                  <Text style={{ flex: 1, textAlign: "center" }}>
+                    <Text>Genres</Text>
+                    <br />
+                    <Text strong style={{ fontSize: "20px" }}>
+                      {item.genre}
+                    </Text>
                   </Text>
-                </Text>
-                <Text style={{ flex: 1, textAlign: "center" }}>
-                  <Text>Author</Text>
-                  <br />
-                  <Text strong style={{ fontSize: "20px" }}>
-                    {item.author ? item.author : "N/A"}
+                  <Text style={{ flex: 1, textAlign: "center" }}>
+                    <Text>Author</Text>
+                    <br />
+                    <Text strong style={{ fontSize: "20px" }}>
+                      {item.author ? item.author : "N/A"}
+                    </Text>
                   </Text>
-                </Text>
-              </div>
-              <hr
-                style={{
-                  color: "#ffffff",
-                  backgroundColor: "#ffffff",
-                  borderColor: "#ffffff",
-                }}
-              />
-              <p> {item.body} </p>
-              <hr
-                style={{
-                  color: "#ffffff",
-                  backgroundColor: "#ffffff",
-                  borderColor: "#ffffff",
-                }}
-              />
-              <div style={{ display: "flex", flexDirection: "row", gap: 10 }}>
-                <text> Sentiment: </text>
+                </div>
+                <hr
+                  style={{
+                    color: "#ffffff",
+                    backgroundColor: "#ffffff",
+                    borderColor: "#ffffff",
+                  }}
+                />
+                <p> {item.body} </p>
+                <hr
+                  style={{
+                    color: "#ffffff",
+                    backgroundColor: "#ffffff",
+                    borderColor: "#ffffff",
+                  }}
+                />
+                <div style={{ display: "flex", flexDirection: "row", gap: 10 }}>
+                  <text> Sentiment: </text>
 
-                {item.senticSubjectivity[0] === "SUBJECTIVE" ? (
-                  <Tag color="cyan">SUBJECTIVE</Tag>
-                ) : (
-                  <Tag color="purple">AMBIVALENT</Tag>
-                )}
-                {item.senticSentiment[0] === "POSITIVE" ? (
-                  <Tag color="green">POSITIVE</Tag>
-                ) : (
-                  <Tag color="red">NEGATIVE</Tag>
-                )}
-              </div>
-            </Card>
-            <br />
-          </div>
-        )}
-      />
+                  {item.senticSubjectivity[0] === "SUBJECTIVE" ? (
+                    <Tag color="cyan">SUBJECTIVE</Tag>
+                  ) : (
+                    <Tag color="purple">AMBIVALENT</Tag>
+                  )}
+                  {item.senticSentiment[0] === "POSITIVE" ? (
+                    <Tag color="green">POSITIVE</Tag>
+                  ) : (
+                    <Tag color="red">NEGATIVE</Tag>
+                  )}
+                </div>
+              </Card>
+              <br />
+            </div>
+          )}
+        />
+      )}
 
       <div style={{ direction: "flex", top: 1500 }}>
         {" "}
