@@ -35,9 +35,25 @@ function App() {
   const [ShowPushshiftSearch, setShowPushshiftSearch] = useState(0); // flag for showing pushshift search
   const [ApiMovieName, setApiMovieName] = useState(""); // movie name search input (for crawling data from pushshift api)
   const [isApiLoading, setIsApiLoading] = useState(false); //  isApiLoading state for search bar
+  const [ShowSentimentFilter, setShowSentimentFilter] = useState(0); // flag for showing advanced search
 
   const { Search } = Input;
   const { Text } = Typography;
+  const [sentimentInput, setSentimentInput] = useState("*"); // movie name selection (for advanced search)
+
+
+
+  const [Subjectivity, setSubjectivity] = useState("*");
+
+  const [Sentiment, setSentiment] = useState("*");
+
+  const onSubjectiveChange = (value) => {
+    setSubjectivity(value);
+  };
+
+  const onSentimentChange = (value) => {
+    setSentiment(value);
+  };
 
   // fetches reddit comments based on users search
   const fetchSolrData = async (searchTerm, movieName) => {
@@ -47,7 +63,11 @@ function App() {
       ")movie_name:(" +
       movieName +
       ")" +
-      "&facet=true&facet.contains.ignoreCase=true&facet.field=senticSubjectivity&facet.field=senticSentiment"; //+ "%22"; //'//"body%3Atoys%20body%3Astory"
+      "senticSubjectivity:" +
+      "(" + Subjectivity + ")" + 
+      "senticSentiment:" +
+      "(" + Sentiment + ")" +
+    "&facet=true&facet.contains.ignoreCase=true&facet.field=senticSubjectivity&facet.field=senticSentiment"; //+ "%22"; //'//"body%3Atoys%20body%3Astory"
     console.log(url);
     const response = await sendRequest(url);
     console.log(response);
@@ -153,16 +173,25 @@ function App() {
   const toggleAdvancedSearch = () => {
     setShowAdvancedSearch(!ShowAdvancedSearch);
     setShowPushshiftSearch(0);
-
+    setShowSentimentFilter(0);
     fetchMovieData();
     setMovieNameInput("*");
 
     //console.log("Advanced search:", ShowAdvancedSearch);
   };
 
+  // button to toggle advanced search (by movie name so far)
+  const toggleSentimentFilter = () => {
+    setShowSentimentFilter(!ShowSentimentFilter);
+    setShowPushshiftSearch(0);
+    setShowAdvancedSearch(0);
+    fetchMovieData();
+  };
+
   // button to toggle pushshift search
   const togglePushshiftSearch = () => {
     setShowPushshiftSearch(!ShowPushshiftSearch);
+    setShowSentimentFilter(0);
     setShowAdvancedSearch(0);
   };
 
@@ -244,6 +273,13 @@ function App() {
           </Button>
           <Button
             style={{ marginBottom: 10, flex: 1 }}
+            onClick={() => toggleSentimentFilter()}
+            type={ShowSentimentFilter ? "primary" : "link"}
+          >
+            Sort by sentiment
+          </Button>
+          <Button
+            style={{ marginBottom: 10, flex: 1 }}
             onClick={() => togglePushshiftSearch()}
             type={ShowPushshiftSearch ? "primary" : "link"}
           >
@@ -267,7 +303,30 @@ function App() {
           ) : (
             <div style={{ flex: 1 }}></div>
           )}
+          {ShowSentimentFilter ? ( 
+            <div>
 
+            <Select
+            style={{ width: 120 }}
+            value={Subjectivity}
+            onChange={onSubjectiveChange}
+            options={[ { value: '*', label: 'None' },
+              { value: 'Objective', label: 'Objective' },
+            { value: 'Subjective', label: 'Subjective' }]}
+          />
+          <Select
+            style={{ width: 120 }}
+            value={Sentiment}
+            onChange={onSentimentChange}
+            options={[ { value: '*', label: 'None' },
+              { value: 'Negative', label: 'Negative' },
+            { value: 'Positive', label: 'Positive' },
+            { value: 'Neutral', label: 'Neutral' }]}
+          />
+          </div>
+          ) : (
+            <div style={{ flex: 1 }}></div>
+          )}
           {ShowPushshiftSearch ? (
             <Search
               placeholder="Search Movie Name from API.."
