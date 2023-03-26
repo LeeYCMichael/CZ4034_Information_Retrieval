@@ -63,11 +63,11 @@ function App() {
       ")movie_name:(" +
       movieName +
       ")" +
-      "senticSubjectivity:" +
+      "Auto_labeller_eval_subj:" +
       "(" + Subjectivity + ")" + 
-      "senticSentiment:" +
+      "Auto_labeller_eval_pol:" +
       "(" + Sentiment + ")" +
-    "&facet=true&facet.contains.ignoreCase=true&facet.field=senticSubjectivity&facet.field=senticSentiment"; //+ "%22"; //'//"body%3Atoys%20body%3Astory"
+    "&facet=true&facet.contains.ignoreCase=true&facet.field=Auto_labeller_eval_subj&facet.field=Auto_labeller_eval_pol"; //+ "%22"; //'//"body%3Atoys%20body%3Astory"
     console.log(url);
     const response = await sendRequest(url);
     console.log(response);
@@ -78,7 +78,7 @@ function App() {
   // fetches all movie titles in database
   const fetchMovieData = async () => {
     let url =
-      "http://localhost:8983/solr/movie_db/query?indent=true&q.op=AND&rows=3000&useParams=&q=*:*&fl=movie_name"; //+ "%22"; //'//"body%3Atoys%20body%3Astory"
+      "http://localhost:8983/solr/movie_db/query?indent=true&q.op=AND&rows=300000&useParams=&q=*:*&fl=movie_name"; //+ "%22"; //'//"body%3Atoys%20body%3Astory"
 
     const response = await sendRequest(url);
     console.log(response);
@@ -198,11 +198,11 @@ function App() {
   // updates advanced search:movie_name
   const handleChange = (value) => {
     if (value) {
-      setSearchInput("*");
+      setSearchInput(searchInput);
       setMovieNameInput(value);
     } else {
       setMovieNameInput("*");
-      setSearchInput("");
+      setSearchInput(searchInput);
     }
     console.log(`Selected: ${value}`);
   };
@@ -498,14 +498,20 @@ function App() {
                 <div style={{ display: "flex", flexDirection: "row", gap: 10 }}>
                   <text> Sentiment: </text>
 
-                  {item.senticSubjectivity[0] === "SUBJECTIVE" ? (
+                  {item.Auto_labeller_eval_subj[0] === "SUBJECTIVE" ? (
                     <Tag color="cyan">SUBJECTIVE</Tag>
                   ) : (
-                    <Tag color="purple">AMBIVALENT</Tag>
+                    <Tag color="purple">OBJECTIVE</Tag>
                   )}
-                  {item.senticSentiment[0] === "POSITIVE" ? (
+                  {item.Auto_labeller_eval_pol[0] === "POSITIVE" ? (
                     <Tag color="green">POSITIVE</Tag>
-                  ) : (
+                  ) : 
+                  item.Auto_labeller_eval_pol[0] === "NEUTRAL" ? (
+                    <Tag color="blue">NEUTRAL</Tag>
+                  ) : item.Auto_labeller_eval_pol[0] === "None" ? (
+                    <> </>
+                  ) : 
+                  (
                     <Tag color="red">NEGATIVE</Tag>
                   )}
                 </div>
@@ -521,10 +527,10 @@ function App() {
         <text> </text>
       </div>
 
-      {FacetFields.senticSentiment &&
-      FacetFields.senticSentiment[1] +
-        FacetFields.senticSentiment[3] +
-        FacetFields.senticSentiment[5] !=
+      {FacetFields.Auto_labeller_eval_pol &&
+      FacetFields.Auto_labeller_eval_pol[1] +
+        FacetFields.Auto_labeller_eval_pol[3] +
+        FacetFields.Auto_labeller_eval_pol[5] !=
         0 ? (
         <div style={{ position: "absolute", right: 150, width: 300, top: 450 }}>
           <Doughnut
@@ -534,9 +540,9 @@ function App() {
                 {
                   label: "Sentiment",
                   data: [
-                    FacetFields.senticSentiment[1],
-                    FacetFields.senticSentiment[3],
-                    FacetFields.senticSentiment[5],
+                    FacetFields.Auto_labeller_eval_pol[1],
+                    FacetFields.Auto_labeller_eval_pol[3],
+                    FacetFields.Auto_labeller_eval_pol[5],
                   ],
                   backgroundColor: [
                     "rgba(99, 255, 132, 0.5)",
@@ -555,9 +561,17 @@ function App() {
             width={300}
             height={300}
             options={{
+              plugins: {
+                legend: {
+                  labels: {
+                    color: 'white'
+                  }
+                }
+            },
               maintainAspectRatio: false,
               responsive: false,
               boxWidth: 10,
+             
             }}
           />
 
@@ -565,24 +579,21 @@ function App() {
 
           <Doughnut
             data={{
-              labels: ["Subjective", "Ambivalent", "Objective"],
+              labels: ["Subjective", "Objective"],
               datasets: [
                 {
                   label: "Subjectivity",
                   data: [
-                    FacetFields.senticSubjectivity[1],
-                    FacetFields.senticSubjectivity[3],
-                    FacetFields.senticSubjectivity[5],
+                    FacetFields.Auto_labeller_eval_subj[1],
+                    FacetFields.Auto_labeller_eval_subj[3],
                   ],
                   backgroundColor: [
                     "rgba(255, 99, 132, 0.5)",
                     "rgba(54, 162, 235, 0.5)",
-                    "rgba(255, 159, 64, 0.5)",
                   ],
                   borderColor: [
                     "rgba(255, 99, 132, 1)",
                     "rgba(54, 162, 235, 1)",
-                    "rgba(255, 159, 64, 1)",
                   ],
                   borderWidth: 1,
                 },
@@ -590,7 +601,19 @@ function App() {
             }}
             width={300}
             height={300}
-            options={{ maintainAspectRatio: false, responsive: false }}
+            options={{
+              plugins: {
+                legend: {
+                  labels: {
+                    color: 'white'
+                  }
+                }
+            },
+              maintainAspectRatio: false,
+              responsive: false,
+              boxWidth: 10,
+             
+            }}
           />
         </div>
       ) : (
