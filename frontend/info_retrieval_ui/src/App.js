@@ -40,8 +40,8 @@ function App() {
   const { Search } = Input;
   const { Text } = Typography;
   const [sentimentInput, setSentimentInput] = useState("*"); // movie name selection (for advanced search)
-
-
+  const [ShowRecentSearch, setShowRecentSearch] = useState(0); // flag for showing pushshift search
+  const [RecentMode, setRecentMode] = useState("desc"); // flag for showing pushshift search
 
   const [Subjectivity, setSubjectivity] = useState("*");
 
@@ -49,6 +49,10 @@ function App() {
 
   const onSubjectiveChange = (value) => {
     setSubjectivity(value);
+  };
+
+  const onRecentChange = (value) => {
+    setRecentMode(value);
   };
 
   const onSentimentChange = (value) => {
@@ -66,7 +70,7 @@ function App() {
       "Auto_labeller_eval_subj:" +
       "(" + Subjectivity + ")" + 
       "Auto_labeller_eval_pol:" +
-      "(" + Sentiment + ")" +
+      "(" + Sentiment + ")" + "&sort=utc_datetime%20" + RecentMode +
     "&facet=true&facet.contains.ignoreCase=true&facet.field=Auto_labeller_eval_subj&facet.field=Auto_labeller_eval_pol"; //+ "%22"; //'//"body%3Atoys%20body%3Astory"
     console.log(url);
     const response = await sendRequest(url);
@@ -169,11 +173,22 @@ function App() {
     setApiMovieSearch(e.target.value);
   };
 
+    // button to toggle advanced search (by movie name so far)
+    const toggleRecentSearch = () => {
+      setShowRecentSearch(!ShowRecentSearch);
+      setShowPushshiftSearch(0);
+      setShowSentimentFilter(0);
+      setShowAdvancedSearch(0);
+      fetchMovieData();
+      //console.log("Advanced search:", ShowAdvancedSearch);
+    };
+
   // button to toggle advanced search (by movie name so far)
   const toggleAdvancedSearch = () => {
     setShowAdvancedSearch(!ShowAdvancedSearch);
     setShowPushshiftSearch(0);
     setShowSentimentFilter(0);
+    setShowRecentSearch(0);
     fetchMovieData();
     setMovieNameInput("*");
 
@@ -185,6 +200,7 @@ function App() {
     setShowSentimentFilter(!ShowSentimentFilter);
     setShowPushshiftSearch(0);
     setShowAdvancedSearch(0);
+    setShowRecentSearch(0);
     fetchMovieData();
   };
 
@@ -193,6 +209,7 @@ function App() {
     setShowPushshiftSearch(!ShowPushshiftSearch);
     setShowSentimentFilter(0);
     setShowAdvancedSearch(0);
+    setShowRecentSearch(0);
   };
 
   // updates advanced search:movie_name
@@ -266,6 +283,12 @@ function App() {
         <div style={{ display: "flex" }}>
           <Button
             style={{ marginBottom: 10, flex: 1 }}
+            onClick={() => toggleRecentSearch()}
+            type={ShowRecentSearch ? "primary" : "link"}>
+            Sort By Recency
+          </Button>
+          <Button
+            style={{ marginBottom: 10, flex: 1 }}
             onClick={() => toggleAdvancedSearch()}
             type={ShowAdvancedSearch ? "primary" : "link"}
           >
@@ -276,7 +299,7 @@ function App() {
             onClick={() => toggleSentimentFilter()}
             type={ShowSentimentFilter ? "primary" : "link"}
           >
-            Sort by sentiment
+           Filter By Sentiment
           </Button>
           <Button
             style={{ marginBottom: 10, flex: 1 }}
@@ -287,6 +310,18 @@ function App() {
           </Button>
         </div>
         <div style={{ display: "flex" }}>
+        {ShowRecentSearch ? ( 
+          <Select
+          style={{ width: 120 }}
+          value={RecentMode}
+          onChange={onRecentChange}
+          options={[ 
+            { value: 'desc', label: 'Most Recent' },
+          { value: 'asc', label: 'Least Recent' }]}
+        /> ) : (
+          <div style={{ flex: 1 }}> </div>
+        )}
+
           {ShowAdvancedSearch ? (
             <Select
               style={{ marginBottom: 10, flex: 1 }}
@@ -479,6 +514,13 @@ function App() {
                       {item.author ? item.author : "N/A"}
                     </Text>
                   </Text>
+                  <Text style={{ flex: 1, textAlign: "center" }}>
+                  <Text>Date</Text>
+                  <br />
+                  <Text strong style={{ fontSize: "20px" }}>
+                    {item.utc_datetime ? item.utc_datetime.toLocaleString().slice(0,10) : "A long time ago"}
+                  </Text>
+                </Text>
                 </div>
                 <hr
                   style={{
