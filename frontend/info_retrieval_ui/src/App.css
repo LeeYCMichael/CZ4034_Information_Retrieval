@@ -9,3 +9,16 @@
 .App-link {
   color: #61dafb;
 }
+
+.grow {
+  background-color: transparent;
+  line-height: 20px;
+}
+.grow:hover {
+  transform: scale(1.2);
+  font-size: 16px;
+  color: gold;
+}
+
+
+

@@ -52,7 +52,8 @@ function App() {
   };
 
   const onRecentChange = (value) => {
-    setRecentMode(value);
+      setRecentMode(value);
+
   };
 
   const onSentimentChange = (value) => {
@@ -68,10 +69,16 @@ function App() {
       movieName +
       ")" +
       "Auto_labeller_eval_subj:" +
-      "(" + Subjectivity + ")" + 
+      "(" +
+      Subjectivity +
+      ")" +
       "Auto_labeller_eval_pol:" +
-      "(" + Sentiment + ")" + "&sort=utc_datetime%20" + RecentMode +
-    "&facet=true&facet.contains.ignoreCase=true&facet.field=Auto_labeller_eval_subj&facet.field=Auto_labeller_eval_pol"; //+ "%22"; //'//"body%3Atoys%20body%3Astory"
+      "(" +
+      Sentiment +
+      ")" +
+      "&sort=utc_datetime%20" +
+      RecentMode +
+      "&facet=true&facet.contains.ignoreCase=true&facet.field=Auto_labeller_eval_subj&facet.field=Auto_labeller_eval_pol"; //+ "%22"; //'//"body%3Atoys%20body%3Astory"
     console.log(url);
     const response = await sendRequest(url);
     console.log(response);
@@ -173,15 +180,15 @@ function App() {
     setApiMovieSearch(e.target.value);
   };
 
-    // button to toggle advanced search (by movie name so far)
-    const toggleRecentSearch = () => {
-      setShowRecentSearch(!ShowRecentSearch);
-      setShowPushshiftSearch(0);
-      setShowSentimentFilter(0);
-      setShowAdvancedSearch(0);
-      fetchMovieData();
-      //console.log("Advanced search:", ShowAdvancedSearch);
-    };
+  // button to toggle advanced search (by movie name so far)
+  const toggleRecentSearch = () => {
+    setShowRecentSearch(!ShowRecentSearch);
+    setShowPushshiftSearch(0);
+    setShowSentimentFilter(0);
+    setShowAdvancedSearch(0);
+    fetchMovieData();
+    //console.log("Advanced search:", ShowAdvancedSearch);
+  };
 
   // button to toggle advanced search (by movie name so far)
   const toggleAdvancedSearch = () => {
@@ -221,6 +228,7 @@ function App() {
       setMovieNameInput("*");
       setSearchInput(searchInput);
     }
+    onSearch(searchInput, value);
     console.log(`Selected: ${value}`);
   };
 
@@ -256,6 +264,9 @@ function App() {
       />
 
       <h1 style={{ fontSize: 60, marginTop: 20 }}>Movies</h1>
+
+  
+
       {ShowPushshiftSearch ? (
         <></>
       ) : (
@@ -270,6 +281,7 @@ function App() {
         />
       )}
 
+      
       <br />
 
       <div
@@ -280,47 +292,51 @@ function App() {
           gap: 2,
         }}
       >
+
         <div style={{ display: "flex" }}>
           <Button
-            style={{ marginBottom: 10, flex: 1 }}
+            style={{ marginBottom: 10, flex: 1, color: "white" }}
             onClick={() => toggleRecentSearch()}
-            type={ShowRecentSearch ? "primary" : "link"}>
-            Sort By Recency
+            type={ShowRecentSearch ? "primary" : "link"}
+          >
+            <text class="grow"> Sort By Recency </text>
           </Button>
           <Button
-            style={{ marginBottom: 10, flex: 1 }}
+            style={{ marginBottom: 10, flex: 1, color: "white" }}
             onClick={() => toggleAdvancedSearch()}
             type={ShowAdvancedSearch ? "primary" : "link"}
           >
-            Advanced Search
+            <text class="grow"> Advanced Search </text>
           </Button>
           <Button
-            style={{ marginBottom: 10, flex: 1 }}
+            style={{ marginBottom: 10, flex: 1, color: "white" }}
             onClick={() => toggleSentimentFilter()}
             type={ShowSentimentFilter ? "primary" : "link"}
           >
-           Filter By Sentiment
+            <text class="grow"> Filter By Sentiment </text>
           </Button>
           <Button
-            style={{ marginBottom: 10, flex: 1 }}
+            style={{ marginBottom: 10, flex: 1, color: "white" }}
             onClick={() => togglePushshiftSearch()}
             type={ShowPushshiftSearch ? "primary" : "link"}
           >
-            Crawl Pushshift Data
+            <text class="grow"> Crawl Pushshift Data </text>
           </Button>
         </div>
         <div style={{ display: "flex" }}>
-        {ShowRecentSearch ? ( 
-          <Select
-          style={{ width: 120 }}
-          value={RecentMode}
-          onChange={onRecentChange}
-          options={[ 
-            { value: 'desc', label: 'Most Recent' },
-          { value: 'asc', label: 'Least Recent' }]}
-        /> ) : (
-          <div style={{ flex: 1 }}> </div>
-        )}
+          {ShowRecentSearch ? (
+            <Select
+              style={{ width: 120 }}
+              value={RecentMode}
+              onChange={onRecentChange}
+              options={[
+                { value: "desc", label: "Most Recent" },
+                { value: "asc", label: "Least Recent" },
+              ]}
+            />
+          ) : (
+            <div style={{ flex: 1 }}> </div>
+          )}
 
           {ShowAdvancedSearch ? (
             <Select
@@ -338,27 +354,30 @@ function App() {
           ) : (
             <div style={{ flex: 1 }}></div>
           )}
-          {ShowSentimentFilter ? ( 
+          {ShowSentimentFilter ? (
             <div>
-
-            <Select
-            style={{ width: 120 }}
-            value={Subjectivity}
-            onChange={onSubjectiveChange}
-            options={[ { value: '*', label: 'None' },
-              { value: 'Objective', label: 'Objective' },
-            { value: 'Subjective', label: 'Subjective' }]}
-          />
-          <Select
-            style={{ width: 120 }}
-            value={Sentiment}
-            onChange={onSentimentChange}
-            options={[ { value: '*', label: 'None' },
-              { value: 'Negative', label: 'Negative' },
-            { value: 'Positive', label: 'Positive' },
-            { value: 'Neutral', label: 'Neutral' }]}
-          />
-          </div>
+              <Select
+                style={{ width: 120 }}
+                value={Subjectivity}
+                onChange={onSubjectiveChange}
+                options={[
+                  { value: "*", label: "None" },
+                  { value: "Objective", label: "Objective" },
+                  { value: "Subjective", label: "Subjective" },
+                ]}
+              />
+              <Select
+                style={{ width: 120 }}
+                value={Sentiment}
+                onChange={onSentimentChange}
+                options={[
+                  { value: "*", label: "None" },
+                  { value: "Negative", label: "Negative" },
+                  { value: "Positive", label: "Positive" },
+                  { value: "Neutral", label: "Neutral" },
+                ]}
+              />
+            </div>
           ) : (
             <div style={{ flex: 1 }}></div>
           )}
@@ -392,6 +411,7 @@ function App() {
 
       {getSuggestion() && !ShowPushshiftSearch ? (
         <Button
+        strong style={{ color: "white" }}
           type="link"
           block
           onClick={() => {
@@ -399,7 +419,7 @@ function App() {
             handleTextClick(suggestion);
           }}
         >
-          Did you mean {getSuggestion()}?
+         <text class = "grow" > Did you mean {getSuggestion()}? </text> 
         </Button>
       ) : (
         <br />
@@ -515,12 +535,14 @@ function App() {
                     </Text>
                   </Text>
                   <Text style={{ flex: 1, textAlign: "center" }}>
-                  <Text>Date</Text>
-                  <br />
-                  <Text strong style={{ fontSize: "20px" }}>
-                    {item.utc_datetime ? item.utc_datetime.toLocaleString().slice(0,10) : "A long time ago"}
+                    <Text>Date</Text>
+                    <br />
+                    <Text strong style={{ fontSize: "20px" }}>
+                      {item.utc_datetime
+                        ? item.utc_datetime.toLocaleString().slice(0, 10)
+                        : "A long time ago"}
+                    </Text>
                   </Text>
-                </Text>
                 </div>
                 <hr
                   style={{
@@ -547,13 +569,11 @@ function App() {
                   )}
                   {item.Auto_labeller_eval_pol[0] === "POSITIVE" ? (
                     <Tag color="green">POSITIVE</Tag>
-                  ) : 
-                  item.Auto_labeller_eval_pol[0] === "NEUTRAL" ? (
+                  ) : item.Auto_labeller_eval_pol[0] === "NEUTRAL" ? (
                     <Tag color="blue">NEUTRAL</Tag>
                   ) : item.Auto_labeller_eval_pol[0] === "None" ? (
                     <> </>
-                  ) : 
-                  (
+                  ) : (
                     <Tag color="red">NEGATIVE</Tag>
                   )}
                 </div>
@@ -606,20 +626,18 @@ function App() {
               plugins: {
                 legend: {
                   labels: {
-                    color: 'white'
-                  }
-                }
-            },
+                    color: "white",
+                  },
+                },
+              },
               maintainAspectRatio: false,
               responsive: false,
               boxWidth: 10,
-             
             }}
           />
 
-          <br></br>
-
           <Doughnut
+            style={{ marginTop: 50 }}
             data={{
               labels: ["Subjective", "Objective"],
               datasets: [
@@ -647,14 +665,13 @@ function App() {
               plugins: {
                 legend: {
                   labels: {
-                    color: 'white'
-                  }
-                }
-            },
+                    color: "white",
+                  },
+                },
+              },
               maintainAspectRatio: false,
               responsive: false,
               boxWidth: 10,
-             
             }}
           />
         </div>
