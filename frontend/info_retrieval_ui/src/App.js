@@ -40,8 +40,8 @@ function App() {
   const { Search } = Input;
   const { Text } = Typography;
   const [sentimentInput, setSentimentInput] = useState("*"); // movie name selection (for advanced search)
-
-
+  const [ShowRecentSearch, setShowRecentSearch] = useState(0); // flag for showing pushshift search
+  const [RecentMode, setRecentMode] = useState("desc"); // flag for showing pushshift search
 
   const [Subjectivity, setSubjectivity] = useState("*");
 
@@ -49,6 +49,11 @@ function App() {
 
   const onSubjectiveChange = (value) => {
     setSubjectivity(value);
+  };
+
+  const onRecentChange = (value) => {
+      setRecentMode(value);
+
   };
 
   const onSentimentChange = (value) => {
@@ -63,11 +68,17 @@ function App() {
       ")movie_name:(" +
       movieName +
       ")" +
-      "senticSubjectivity:" +
-      "(" + Subjectivity + ")" + 
-      "senticSentiment:" +
-      "(" + Sentiment + ")" +
-    "&facet=true&facet.contains.ignoreCase=true&facet.field=senticSubjectivity&facet.field=senticSentiment"; //+ "%22"; //'//"body%3Atoys%20body%3Astory"
+      "Auto_labeller_eval_subj:" +
+      "(" +
+      Subjectivity +
+      ")" +
+      "Auto_labeller_eval_pol:" +
+      "(" +
+      Sentiment +
+      ")" +
+      "&sort=utc_datetime%20" +
+      RecentMode +
+      "&facet=true&facet.contains.ignoreCase=true&facet.field=Auto_labeller_eval_subj&facet.field=Auto_labeller_eval_pol"; //+ "%22"; //'//"body%3Atoys%20body%3Astory"
     console.log(url);
     const response = await sendRequest(url);
     console.log(response);
@@ -78,7 +89,7 @@ function App() {
   // fetches all movie titles in database
   const fetchMovieData = async () => {
     let url =
-      "http://localhost:8983/solr/movie_db/query?indent=true&q.op=AND&rows=3000&useParams=&q=*:*&fl=movie_name"; //+ "%22"; //'//"body%3Atoys%20body%3Astory"
+      "http://localhost:8983/solr/movie_db/query?indent=true&q.op=AND&rows=300000&useParams=&q=*:*&fl=movie_name"; //+ "%22"; //'//"body%3Atoys%20body%3Astory"
 
     const response = await sendRequest(url);
     console.log(response);
@@ -170,10 +181,21 @@ function App() {
   };
 
   // button to toggle advanced search (by movie name so far)
+  const toggleRecentSearch = () => {
+    setShowRecentSearch(!ShowRecentSearch);
+    setShowPushshiftSearch(0);
+    setShowSentimentFilter(0);
+    setShowAdvancedSearch(0);
+    fetchMovieData();
+    //console.log("Advanced search:", ShowAdvancedSearch);
+  };
+
+  // button to toggle advanced search (by movie name so far)
   const toggleAdvancedSearch = () => {
     setShowAdvancedSearch(!ShowAdvancedSearch);
     setShowPushshiftSearch(0);
     setShowSentimentFilter(0);
+    setShowRecentSearch(0);
     fetchMovieData();
     setMovieNameInput("*");
 
@@ -185,6 +207,7 @@ function App() {
     setShowSentimentFilter(!ShowSentimentFilter);
     setShowPushshiftSearch(0);
     setShowAdvancedSearch(0);
+    setShowRecentSearch(0);
     fetchMovieData();
   };
 
@@ -193,17 +216,19 @@ function App() {
     setShowPushshiftSearch(!ShowPushshiftSearch);
     setShowSentimentFilter(0);
     setShowAdvancedSearch(0);
+    setShowRecentSearch(0);
   };
 
   // updates advanced search:movie_name
   const handleChange = (value) => {
     if (value) {
-      setSearchInput("*");
+      setSearchInput(searchInput);
       setMovieNameInput(value);
     } else {
       setMovieNameInput("*");
-      setSearchInput("");
+      setSearchInput(searchInput);
     }
+    onSearch(searchInput, value);
     console.log(`Selected: ${value}`);
   };
 
@@ -239,6 +264,9 @@ function App() {
       />
 
       <h1 style={{ fontSize: 60, marginTop: 20 }}>Movies</h1>
+
+  
+
       {ShowPushshiftSearch ? (
         <></>
       ) : (
@@ -253,6 +281,7 @@ function App() {
         />
       )}
 
+      
       <br />
 
       <div
@@ -263,30 +292,52 @@ function App() {
           gap: 2,
         }}
       >
+
         <div style={{ display: "flex" }}>
           <Button
-            style={{ marginBottom: 10, flex: 1 }}
+            style={{ marginBottom: 10, flex: 1, color: "white" }}
+            onClick={() => toggleRecentSearch()}
+            type={ShowRecentSearch ? "primary" : "link"}
+          >
+            <text class="grow"> Sort By Recency </text>
+          </Button>
+          <Button
+            style={{ marginBottom: 10, flex: 1, color: "white" }}
             onClick={() => toggleAdvancedSearch()}
             type={ShowAdvancedSearch ? "primary" : "link"}
           >
-            Advanced Search
+            <text class="grow"> Advanced Search </text>
           </Button>
           <Button
-            style={{ marginBottom: 10, flex: 1 }}
+            style={{ marginBottom: 10, flex: 1, color: "white" }}
             onClick={() => toggleSentimentFilter()}
             type={ShowSentimentFilter ? "primary" : "link"}
           >
-            Sort by sentiment
+            <text class="grow"> Filter By Sentiment </text>
           </Button>
           <Button
-            style={{ marginBottom: 10, flex: 1 }}
+            style={{ marginBottom: 10, flex: 1, color: "white" }}
             onClick={() => togglePushshiftSearch()}
             type={ShowPushshiftSearch ? "primary" : "link"}
           >
-            Crawl Pushshift Data
+            <text class="grow"> Crawl Pushshift Data </text>
           </Button>
         </div>
         <div style={{ display: "flex" }}>
+          {ShowRecentSearch ? (
+            <Select
+              style={{ width: 120 }}
+              value={RecentMode}
+              onChange={onRecentChange}
+              options={[
+                { value: "desc", label: "Most Recent" },
+                { value: "asc", label: "Least Recent" },
+              ]}
+            />
+          ) : (
+            <div style={{ flex: 1 }}> </div>
+          )}
+
           {ShowAdvancedSearch ? (
             <Select
               style={{ marginBottom: 10, flex: 1 }}
@@ -303,27 +354,30 @@ function App() {
           ) : (
             <div style={{ flex: 1 }}></div>
           )}
-          {ShowSentimentFilter ? ( 
+          {ShowSentimentFilter ? (
             <div>
-
-            <Select
-            style={{ width: 120 }}
-            value={Subjectivity}
-            onChange={onSubjectiveChange}
-            options={[ { value: '*', label: 'None' },
-              { value: 'Objective', label: 'Objective' },
-            { value: 'Subjective', label: 'Subjective' }]}
-          />
-          <Select
-            style={{ width: 120 }}
-            value={Sentiment}
-            onChange={onSentimentChange}
-            options={[ { value: '*', label: 'None' },
-              { value: 'Negative', label: 'Negative' },
-            { value: 'Positive', label: 'Positive' },
-            { value: 'Neutral', label: 'Neutral' }]}
-          />
-          </div>
+              <Select
+                style={{ width: 120 }}
+                value={Subjectivity}
+                onChange={onSubjectiveChange}
+                options={[
+                  { value: "*", label: "None" },
+                  { value: "Objective", label: "Objective" },
+                  { value: "Subjective", label: "Subjective" },
+                ]}
+              />
+              <Select
+                style={{ width: 120 }}
+                value={Sentiment}
+                onChange={onSentimentChange}
+                options={[
+                  { value: "*", label: "None" },
+                  { value: "Negative", label: "Negative" },
+                  { value: "Positive", label: "Positive" },
+                  { value: "Neutral", label: "Neutral" },
+                ]}
+              />
+            </div>
           ) : (
             <div style={{ flex: 1 }}></div>
           )}
@@ -357,6 +411,7 @@ function App() {
 
       {getSuggestion() && !ShowPushshiftSearch ? (
         <Button
+        strong style={{ color: "white" }}
           type="link"
           block
           onClick={() => {
@@ -364,7 +419,7 @@ function App() {
             handleTextClick(suggestion);
           }}
         >
-          Did you mean {getSuggestion()}?
+         <text class = "grow" > Did you mean {getSuggestion()}? </text> 
         </Button>
       ) : (
         <br />
@@ -479,6 +534,15 @@ function App() {
                       {item.author ? item.author : "N/A"}
                     </Text>
                   </Text>
+                  <Text style={{ flex: 1, textAlign: "center" }}>
+                    <Text>Date</Text>
+                    <br />
+                    <Text strong style={{ fontSize: "20px" }}>
+                      {item.utc_datetime
+                        ? item.utc_datetime.toLocaleString().slice(0, 10)
+                        : "A long time ago"}
+                    </Text>
+                  </Text>
                 </div>
                 <hr
                   style={{
@@ -498,13 +562,17 @@ function App() {
                 <div style={{ display: "flex", flexDirection: "row", gap: 10 }}>
                   <text> Sentiment: </text>
 
-                  {item.senticSubjectivity[0] === "SUBJECTIVE" ? (
+                  {item.Auto_labeller_eval_subj[0] === "SUBJECTIVE" ? (
                     <Tag color="cyan">SUBJECTIVE</Tag>
                   ) : (
-                    <Tag color="purple">AMBIVALENT</Tag>
+                    <Tag color="purple">OBJECTIVE</Tag>
                   )}
-                  {item.senticSentiment[0] === "POSITIVE" ? (
+                  {item.Auto_labeller_eval_pol[0] === "POSITIVE" ? (
                     <Tag color="green">POSITIVE</Tag>
+                  ) : item.Auto_labeller_eval_pol[0] === "NEUTRAL" ? (
+                    <Tag color="blue">NEUTRAL</Tag>
+                  ) : item.Auto_labeller_eval_pol[0] === "None" ? (
+                    <> </>
                   ) : (
                     <Tag color="red">NEGATIVE</Tag>
                   )}
@@ -521,10 +589,10 @@ function App() {
         <text> </text>
       </div>
 
-      {FacetFields.senticSentiment &&
-      FacetFields.senticSentiment[1] +
-        FacetFields.senticSentiment[3] +
-        FacetFields.senticSentiment[5] !=
+      {FacetFields.Auto_labeller_eval_pol &&
+      FacetFields.Auto_labeller_eval_pol[1] +
+        FacetFields.Auto_labeller_eval_pol[3] +
+        FacetFields.Auto_labeller_eval_pol[5] !=
         0 ? (
         <div style={{ position: "absolute", right: 150, width: 300, top: 450 }}>
           <Doughnut
@@ -534,9 +602,9 @@ function App() {
                 {
                   label: "Sentiment",
                   data: [
-                    FacetFields.senticSentiment[1],
-                    FacetFields.senticSentiment[3],
-                    FacetFields.senticSentiment[5],
+                    FacetFields.Auto_labeller_eval_pol[1],
+                    FacetFields.Auto_labeller_eval_pol[3],
+                    FacetFields.Auto_labeller_eval_pol[5],
                   ],
                   backgroundColor: [
                     "rgba(99, 255, 132, 0.5)",
@@ -555,34 +623,37 @@ function App() {
             width={300}
             height={300}
             options={{
+              plugins: {
+                legend: {
+                  labels: {
+                    color: "white",
+                  },
+                },
+              },
               maintainAspectRatio: false,
               responsive: false,
               boxWidth: 10,
             }}
           />
 
-          <br></br>
-
           <Doughnut
+            style={{ marginTop: 50 }}
             data={{
-              labels: ["Subjective", "Ambivalent", "Objective"],
+              labels: ["Subjective", "Objective"],
               datasets: [
                 {
                   label: "Subjectivity",
                   data: [
-                    FacetFields.senticSubjectivity[1],
-                    FacetFields.senticSubjectivity[3],
-                    FacetFields.senticSubjectivity[5],
+                    FacetFields.Auto_labeller_eval_subj[1],
+                    FacetFields.Auto_labeller_eval_subj[3],
                   ],
                   backgroundColor: [
                     "rgba(255, 99, 132, 0.5)",
                     "rgba(54, 162, 235, 0.5)",
-                    "rgba(255, 159, 64, 0.5)",
                   ],
                   borderColor: [
                     "rgba(255, 99, 132, 1)",
                     "rgba(54, 162, 235, 1)",
-                    "rgba(255, 159, 64, 1)",
                   ],
                   borderWidth: 1,
                 },
@@ -590,7 +661,18 @@ function App() {
             }}
             width={300}
             height={300}
-            options={{ maintainAspectRatio: false, responsive: false }}
+            options={{
+              plugins: {
+                legend: {
+                  labels: {
+                    color: "white",
+                  },
+                },
+              },
+              maintainAspectRatio: false,
+              responsive: false,
+              boxWidth: 10,
+            }}
           />
         </div>
       ) : (
