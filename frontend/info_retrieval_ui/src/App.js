@@ -2,6 +2,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import { useHttpClient } from "./hook";
 import { useState, useEffect } from "react";
+import moment from "moment";
 import {
   Card,
   Input,
@@ -36,6 +37,7 @@ function App() {
   const [ApiMovieName, setApiMovieName] = useState(""); // movie name search input (for crawling data from pushshift api)
   const [isApiLoading, setIsApiLoading] = useState(false); //  isApiLoading state for search bar
   const [ShowSentimentFilter, setShowSentimentFilter] = useState(0); // flag for showing advanced search
+  const [AdvancedSearchMovie, setAdvancedSearchMovie] = useState(""); // advanced search movie dropdown
 
   const { Search } = Input;
   const { Text } = Typography;
@@ -52,8 +54,7 @@ function App() {
   };
 
   const onRecentChange = (value) => {
-      setRecentMode(value);
-
+    setRecentMode(value);
   };
 
   const onSentimentChange = (value) => {
@@ -180,7 +181,7 @@ function App() {
     setApiMovieSearch(e.target.value);
   };
 
-  // button to toggle advanced search (by movie name so far)
+  // button to toggle recent search (by movie name so far)
   const toggleRecentSearch = () => {
     setShowRecentSearch(!ShowRecentSearch);
     setShowPushshiftSearch(0);
@@ -196,13 +197,13 @@ function App() {
     setShowPushshiftSearch(0);
     setShowSentimentFilter(0);
     setShowRecentSearch(0);
-    fetchMovieData();
     setMovieNameInput("*");
+    fetchMovieData();
 
     //console.log("Advanced search:", ShowAdvancedSearch);
   };
 
-  // button to toggle advanced search (by movie name so far)
+  // button to toggle sentiment search (by movie name so far)
   const toggleSentimentFilter = () => {
     setShowSentimentFilter(!ShowSentimentFilter);
     setShowPushshiftSearch(0);
@@ -224,6 +225,7 @@ function App() {
     if (value) {
       setSearchInput(searchInput);
       setMovieNameInput(value);
+      setAdvancedSearchMovie(value);
     } else {
       setMovieNameInput("*");
       setSearchInput(searchInput);
@@ -253,7 +255,10 @@ function App() {
     setSearchInput(suggestion);
     onSearch(suggestion, MovieNameInput);
   };
-
+  const formatDate = (dateString) => {
+    const date = moment(dateString);
+    return date.format("DD MMM YYYY");
+  };
   return (
     <div className="App">
       <Image
@@ -264,8 +269,6 @@ function App() {
       />
 
       <h1 style={{ fontSize: 60, marginTop: 20 }}>Movies</h1>
-
-  
 
       {ShowPushshiftSearch ? (
         <></>
@@ -281,7 +284,6 @@ function App() {
         />
       )}
 
-      
       <br />
 
       <div
@@ -292,7 +294,6 @@ function App() {
           gap: 2,
         }}
       >
-
         <div style={{ display: "flex" }}>
           <Button
             style={{ marginBottom: 10, flex: 1, color: "white" }}
@@ -326,7 +327,7 @@ function App() {
         <div style={{ display: "flex" }}>
           {ShowRecentSearch ? (
             <Select
-              style={{ width: 120 }}
+              style={{ flex: 1 }}
               value={RecentMode}
               onChange={onRecentChange}
               options={[
@@ -355,28 +356,38 @@ function App() {
             <div style={{ flex: 1 }}></div>
           )}
           {ShowSentimentFilter ? (
-            <div>
-              <Select
-                style={{ width: 120 }}
-                value={Subjectivity}
-                onChange={onSubjectiveChange}
-                options={[
-                  { value: "*", label: "None" },
-                  { value: "Objective", label: "Objective" },
-                  { value: "Subjective", label: "Subjective" },
-                ]}
-              />
-              <Select
-                style={{ width: 120 }}
-                value={Sentiment}
-                onChange={onSentimentChange}
-                options={[
-                  { value: "*", label: "None" },
-                  { value: "Negative", label: "Negative" },
-                  { value: "Positive", label: "Positive" },
-                  { value: "Neutral", label: "Neutral" },
-                ]}
-              />
+            <div style={{ flex: 1 }}>
+              <div style={{ flexGrow: 1 }}>
+                <div style={{ textAlign: "left", fontSize: 14, lineHeight: 2 }}>
+                  Select Subjectivity
+                </div>
+                <Select
+                  style={{ width: "100%" }}
+                  value={Subjectivity}
+                  onChange={onSubjectiveChange}
+                  options={[
+                    { value: "*", label: "None" },
+                    { value: "Objective", label: "Objective" },
+                    { value: "Subjective", label: "Subjective" },
+                  ]}
+                />
+              </div>
+              <div style={{ flexGrow: 1 }}>
+                <div style={{ textAlign: "left", fontSize: 14, lineHeight: 2 }}>
+                  Select Sentiment
+                </div>
+                <Select
+                  style={{ width: "100%" }}
+                  value={Sentiment}
+                  onChange={onSentimentChange}
+                  options={[
+                    { value: "*", label: "None" },
+                    { value: "Negative", label: "Negative" },
+                    { value: "Positive", label: "Positive" },
+                    { value: "Neutral", label: "Neutral" },
+                  ]}
+                />
+              </div>
             </div>
           ) : (
             <div style={{ flex: 1 }}></div>
@@ -411,7 +422,8 @@ function App() {
 
       {getSuggestion() && !ShowPushshiftSearch ? (
         <Button
-        strong style={{ color: "white" }}
+          strong
+          style={{ color: "white" }}
           type="link"
           block
           onClick={() => {
@@ -419,265 +431,356 @@ function App() {
             handleTextClick(suggestion);
           }}
         >
-         <text class = "grow" > Did you mean {getSuggestion()}? </text> 
+          <text class="grow"> Did you mean {getSuggestion()}? </text>
         </Button>
       ) : (
         <br />
       )}
 
-      {ShowPushshiftSearch && ApiMovieName ? (
-        <>
-          <Text strong style={{ fontSize: "20px", color: "white" }}>
-            Crawled 10 Comments about {ApiMovieName} from Pushshift API
-          </Text>
+      <div className="column-display">
+        {ShowPushshiftSearch && ApiMovieName ? (
+          <>
+            <div className="center">
+              <Text strong style={{ fontSize: "20px", color: "white" }}>
+                Crawled 10 Comments about {ApiMovieName} from Pushshift API
+              </Text>
 
-          <List
-            style={{ marginTop: 30 }}
-            dataSource={PushshiftData}
-            renderItem={(item) => (
-              <div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <List
+                  style={{ marginTop: 30 }}
+                  dataSource={PushshiftData}
+                  renderItem={(item) => (
+                    <div style={{ alignItems: "center" }}>
+                      <Card
+                        style={{
+                          width: 800,
+                          textAlign: "left",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Text style={{ flex: 1, textAlign: "center" }}>
+                            <Text>Searched Term</Text>
+                            <br />
+                            <Text strong style={{ fontSize: "20px" }}>
+                              {ApiMovieName}
+                            </Text>
+                          </Text>
+
+                          <Text style={{ flex: 1, textAlign: "center" }}>
+                            <Text>Date</Text>
+                            <br />
+                            <Text strong style={{ fontSize: "20px" }}>
+                              {formatDate(item.utc_datetime_str)}
+                            </Text>
+                          </Text>
+                          <Text style={{ flex: 1, textAlign: "center" }}>
+                            <Text>Author</Text>
+                            <br />
+                            <Text strong style={{ fontSize: "20px" }}>
+                              {item.author ? item.author : "N/A"}
+                            </Text>
+                          </Text>
+                        </div>
+                        <hr
+                          style={{
+                            color: "#ffffff",
+                            backgroundColor: "#ffffff",
+                            borderColor: "#ffffff",
+                          }}
+                        />
+                        <p> {item.body} </p>
+                        <hr
+                          style={{
+                            color: "#ffffff",
+                            backgroundColor: "#ffffff",
+                            borderColor: "#ffffff",
+                          }}
+                        />
+                      </Card>
+                      <br />
+                    </div>
+                  )}
+                />
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="left">
+              {SolrData.length !== 0 &&
+              AdvancedSearchMovie &&
+              ShowAdvancedSearch ? (
                 <Card
                   style={{
-                    width: 800,
-                    textAlign: "left",
+                    width: "80%",
+                    alignSelf: "flex-start",
                   }}
                 >
                   <div
                     style={{
                       display: "flex",
-                      flexDirection: "row",
+                      flexDirection: "column",
                       justifyContent: "space-between",
+                      gap: 10,
                     }}
                   >
                     <Text style={{ flex: 1, textAlign: "center" }}>
-                      <Text>Searched Term</Text>
+                      <Text>Movie Name</Text>
                       <br />
                       <Text strong style={{ fontSize: "20px" }}>
-                        {ApiMovieName}
+                        {SolrData.docs[0].movie_name}
                       </Text>
                     </Text>
 
                     <Text style={{ flex: 1, textAlign: "center" }}>
-                      <Text>Date</Text>
+                      <Text>Genres</Text>
                       <br />
                       <Text strong style={{ fontSize: "20px" }}>
-                        {item.utc_datetime_str}
+                        {SolrData.docs[0].genre}
                       </Text>
                     </Text>
+
                     <Text style={{ flex: 1, textAlign: "center" }}>
-                      <Text>Author</Text>
+                      <Text>Release Date</Text>
                       <br />
                       <Text strong style={{ fontSize: "20px" }}>
-                        {item.author ? item.author : "N/A"}
+                        {formatDate(SolrData.docs[0].release_date[0])}
+                      </Text>
+                    </Text>
+
+                    <Text style={{ flex: 1, textAlign: "center" }}>
+                      <Text>Popularity</Text>
+                      <br />
+                      <Text strong style={{ fontSize: "20px" }}>
+                        {SolrData.docs[0].popularity}
+                      </Text>
+                    </Text>
+
+                    <Text style={{ flex: 1, textAlign: "center" }}>
+                      <Text>Vote</Text>
+                      <br />
+                      <Text strong style={{ fontSize: "20px" }}>
+                        {SolrData.docs[0].vote_average}
                       </Text>
                     </Text>
                   </div>
-                  <hr
-                    style={{
-                      color: "#ffffff",
-                      backgroundColor: "#ffffff",
-                      borderColor: "#ffffff",
-                    }}
-                  />
-                  <p> {item.body} </p>
-                  <hr
-                    style={{
-                      color: "#ffffff",
-                      backgroundColor: "#ffffff",
-                      borderColor: "#ffffff",
-                    }}
-                  />
                 </Card>
-                <br />
-              </div>
-            )}
-          />
-        </>
-      ) : (
-        <List
-          style={{ marginTop: 30 }}
-          dataSource={SolrData.docs}
-          renderItem={(item) => (
-            <div>
-              <Card
+              ) : (
+                <></>
+              )}
+            </div>
+            <div className="center">
+              <div
                 style={{
-                  width: 800,
-                  textAlign: "left",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Text style={{ flex: 1, textAlign: "center" }}>
-                    <Text>Movie Name</Text>
-                    <br />
-                    <Text strong style={{ fontSize: "20px" }}>
-                      {item.movie_name}
-                    </Text>
-                  </Text>
+                <List
+                  dataSource={SolrData.docs}
+                  renderItem={(item) => (
+                    <div>
+                      <Card
+                        style={{
+                          width: 800,
+                          textAlign: "left",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Text style={{ flex: 1, textAlign: "center" }}>
+                            <Text>Movie Name</Text>
+                            <br />
+                            <Text strong style={{ fontSize: "20px" }}>
+                              {item.movie_name}
+                            </Text>
+                          </Text>
 
-                  <Text style={{ flex: 1, textAlign: "center" }}>
-                    <Text>Genres</Text>
-                    <br />
-                    <Text strong style={{ fontSize: "20px" }}>
-                      {item.genre}
-                    </Text>
-                  </Text>
-                  <Text style={{ flex: 1, textAlign: "center" }}>
-                    <Text>Author</Text>
-                    <br />
-                    <Text strong style={{ fontSize: "20px" }}>
-                      {item.author ? item.author : "N/A"}
-                    </Text>
-                  </Text>
-                  <Text style={{ flex: 1, textAlign: "center" }}>
-                    <Text>Date</Text>
-                    <br />
-                    <Text strong style={{ fontSize: "20px" }}>
-                      {item.utc_datetime
-                        ? item.utc_datetime.toLocaleString().slice(0, 10)
-                        : "A long time ago"}
-                    </Text>
-                  </Text>
-                </div>
-                <hr
-                  style={{
-                    color: "#ffffff",
-                    backgroundColor: "#ffffff",
-                    borderColor: "#ffffff",
-                  }}
-                />
-                <p> {item.body} </p>
-                <hr
-                  style={{
-                    color: "#ffffff",
-                    backgroundColor: "#ffffff",
-                    borderColor: "#ffffff",
-                  }}
-                />
-                <div style={{ display: "flex", flexDirection: "row", gap: 10 }}>
-                  <text> Sentiment: </text>
+                          <Text style={{ flex: 1, textAlign: "center" }}>
+                            <Text>Genres</Text>
+                            <br />
+                            <Text strong style={{ fontSize: "20px" }}>
+                              {item.genre}
+                            </Text>
+                          </Text>
+                          <Text style={{ flex: 1, textAlign: "center" }}>
+                            <Text>Author</Text>
+                            <br />
+                            <Text strong style={{ fontSize: "20px" }}>
+                              {item.author ? item.author : "N/A"}
+                            </Text>
+                          </Text>
+                          <Text style={{ flex: 1, textAlign: "center" }}>
+                            <Text>Date</Text>
+                            <br />
+                            <Text strong style={{ fontSize: "20px" }}>
+                              {item.utc_datetime
+                                ? formatDate(item.utc_datetime)
+                                : "A long time ago"}
+                            </Text>
+                          </Text>
+                        </div>
+                        <hr
+                          style={{
+                            color: "#ffffff",
+                            backgroundColor: "#ffffff",
+                            borderColor: "#ffffff",
+                          }}
+                        />
+                        <p> {item.body} </p>
+                        <hr
+                          style={{
+                            color: "#ffffff",
+                            backgroundColor: "#ffffff",
+                            borderColor: "#ffffff",
+                          }}
+                        />
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            gap: 10,
+                          }}
+                        >
+                          <text> Sentiment: </text>
 
-                  {item.Auto_labeller_eval_subj[0] === "SUBJECTIVE" ? (
-                    <Tag color="cyan">SUBJECTIVE</Tag>
-                  ) : (
-                    <Tag color="purple">OBJECTIVE</Tag>
+                          {item.Auto_labeller_eval_subj[0] === "SUBJECTIVE" ? (
+                            <Tag color="cyan">SUBJECTIVE</Tag>
+                          ) : (
+                            <Tag color="purple">OBJECTIVE</Tag>
+                          )}
+                          {item.Auto_labeller_eval_pol[0] === "POSITIVE" ? (
+                            <Tag color="green">POSITIVE</Tag>
+                          ) : item.Auto_labeller_eval_pol[0] === "NEUTRAL" ? (
+                            <Tag color="blue">NEUTRAL</Tag>
+                          ) : item.Auto_labeller_eval_pol[0] === "None" ? (
+                            <> </>
+                          ) : (
+                            <Tag color="red">NEGATIVE</Tag>
+                          )}
+                        </div>
+                      </Card>
+                      <br />
+                    </div>
                   )}
-                  {item.Auto_labeller_eval_pol[0] === "POSITIVE" ? (
-                    <Tag color="green">POSITIVE</Tag>
-                  ) : item.Auto_labeller_eval_pol[0] === "NEUTRAL" ? (
-                    <Tag color="blue">NEUTRAL</Tag>
-                  ) : item.Auto_labeller_eval_pol[0] === "None" ? (
-                    <> </>
-                  ) : (
-                    <Tag color="red">NEGATIVE</Tag>
-                  )}
-                </div>
-              </Card>
-              <br />
+                />
+              </div>
             </div>
-          )}
-        />
-      )}
+            <div className="right">
+              {SolrData.length !== 0 &&
+              FacetFields.Auto_labeller_eval_pol &&
+              FacetFields.Auto_labeller_eval_pol[1] +
+                FacetFields.Auto_labeller_eval_pol[3] +
+                FacetFields.Auto_labeller_eval_pol[5] !=
+                0 ? (
+                <div
+                // style={{ position: "absolute", right: 150, width: 300, top: 450 }}
+                >
+                  <Doughnut
+                    data={{
+                      labels: ["Positive", "Negative", "Neutral"],
+                      datasets: [
+                        {
+                          label: "Sentiment",
+                          data: [
+                            FacetFields.Auto_labeller_eval_pol[1],
+                            FacetFields.Auto_labeller_eval_pol[3],
+                            FacetFields.Auto_labeller_eval_pol[5],
+                          ],
+                          backgroundColor: [
+                            "rgba(99, 255, 132, 0.5)",
+                            "rgba(255, 159, 64, 0.5)",
+                            "rgba(54, 162, 235, 0.5)",
+                          ],
+                          borderColor: [
+                            "rgba(99, 255, 132, 1)",
+                            "rgba(255, 159, 64, 1)",
+                            "rgba(54, 162, 235, 1)",
+                          ],
+                          borderWidth: 1,
+                        },
+                      ],
+                    }}
+                    width={300}
+                    height={300}
+                    options={{
+                      plugins: {
+                        legend: {
+                          labels: {
+                            color: "white",
+                          },
+                        },
+                      },
+                      maintainAspectRatio: false,
+                      responsive: false,
+                      boxWidth: 10,
+                    }}
+                  />
 
-      <div style={{ direction: "flex", top: 1500 }}>
-        {" "}
-        <text> </text>
+                  <Doughnut
+                    style={{ marginTop: 50 }}
+                    data={{
+                      labels: ["Subjective", "Objective"],
+                      datasets: [
+                        {
+                          label: "Subjectivity",
+                          data: [
+                            FacetFields.Auto_labeller_eval_subj[1],
+                            FacetFields.Auto_labeller_eval_subj[3],
+                          ],
+                          backgroundColor: [
+                            "rgba(255, 99, 132, 0.5)",
+                            "rgba(54, 162, 235, 0.5)",
+                          ],
+                          borderColor: [
+                            "rgba(255, 99, 132, 1)",
+                            "rgba(54, 162, 235, 1)",
+                          ],
+                          borderWidth: 1,
+                        },
+                      ],
+                    }}
+                    width={300}
+                    height={300}
+                    options={{
+                      plugins: {
+                        legend: {
+                          labels: {
+                            color: "white",
+                          },
+                        },
+                      },
+                      maintainAspectRatio: false,
+                      responsive: false,
+                      boxWidth: 10,
+                    }}
+                  />
+                </div>
+              ) : (
+                <></>
+              )}
+            </div>
+          </>
+        )}
       </div>
-
-      {FacetFields.Auto_labeller_eval_pol &&
-      FacetFields.Auto_labeller_eval_pol[1] +
-        FacetFields.Auto_labeller_eval_pol[3] +
-        FacetFields.Auto_labeller_eval_pol[5] !=
-        0 ? (
-        <div style={{ position: "absolute", right: 150, width: 300, top: 450 }}>
-          <Doughnut
-            data={{
-              labels: ["Positive", "Negative", "Neutral"],
-              datasets: [
-                {
-                  label: "Sentiment",
-                  data: [
-                    FacetFields.Auto_labeller_eval_pol[1],
-                    FacetFields.Auto_labeller_eval_pol[3],
-                    FacetFields.Auto_labeller_eval_pol[5],
-                  ],
-                  backgroundColor: [
-                    "rgba(99, 255, 132, 0.5)",
-                    "rgba(255, 159, 64, 0.5)",
-                    "rgba(54, 162, 235, 0.5)",
-                  ],
-                  borderColor: [
-                    "rgba(99, 255, 132, 1)",
-                    "rgba(255, 159, 64, 1)",
-                    "rgba(54, 162, 235, 1)",
-                  ],
-                  borderWidth: 1,
-                },
-              ],
-            }}
-            width={300}
-            height={300}
-            options={{
-              plugins: {
-                legend: {
-                  labels: {
-                    color: "white",
-                  },
-                },
-              },
-              maintainAspectRatio: false,
-              responsive: false,
-              boxWidth: 10,
-            }}
-          />
-
-          <Doughnut
-            style={{ marginTop: 50 }}
-            data={{
-              labels: ["Subjective", "Objective"],
-              datasets: [
-                {
-                  label: "Subjectivity",
-                  data: [
-                    FacetFields.Auto_labeller_eval_subj[1],
-                    FacetFields.Auto_labeller_eval_subj[3],
-                  ],
-                  backgroundColor: [
-                    "rgba(255, 99, 132, 0.5)",
-                    "rgba(54, 162, 235, 0.5)",
-                  ],
-                  borderColor: [
-                    "rgba(255, 99, 132, 1)",
-                    "rgba(54, 162, 235, 1)",
-                  ],
-                  borderWidth: 1,
-                },
-              ],
-            }}
-            width={300}
-            height={300}
-            options={{
-              plugins: {
-                legend: {
-                  labels: {
-                    color: "white",
-                  },
-                },
-              },
-              maintainAspectRatio: false,
-              responsive: false,
-              boxWidth: 10,
-            }}
-          />
-        </div>
-      ) : (
-        <></>
-      )}
     </div>
   );
 }
