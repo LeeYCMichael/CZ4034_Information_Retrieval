@@ -17,8 +17,22 @@
 .grow:hover {
   transform: scale(1.2);
   font-size: 16px;
-  color: gold;
+  color: #1677ff;
 }
 
+.column-display {
+  display: flex;
+  width: 100%;
+}
 
+.column-display .left,
+.column-display .right {
+  width: 25%;
+  display: flex;
+  justify-content: space-evenly;
+}
 
+.column-display .center {
+  flex: 1;
+  align-items: center;
+}
