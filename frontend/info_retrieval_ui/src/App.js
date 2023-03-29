@@ -519,64 +519,68 @@ function App() {
         ) : (
           <>
             <div className="left">
-              {SolrData.docs.length > 0 &&
-              AdvancedSearchMovie &&
-              ShowAdvancedSearch ? (
-                <Card
-                  style={{
-                    width: "80%",
-                    alignSelf: "flex-start",
-                  }}
-                >
-                  <div
+              {SolrData.length !== 0 ? (
+                SolrData.docs.length > 0 &&
+                AdvancedSearchMovie &&
+                ShowAdvancedSearch ? (
+                  <Card
                     style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                      gap: 10,
+                      width: "80%",
+                      alignSelf: "flex-start",
                     }}
                   >
-                    <Text style={{ flex: 1, textAlign: "center" }}>
-                      <Text>Movie Name</Text>
-                      <br />
-                      <Text strong style={{ fontSize: "20px" }}>
-                        {SolrData.docs[0].movie_name}
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                        gap: 10,
+                      }}
+                    >
+                      <Text style={{ flex: 1, textAlign: "center" }}>
+                        <Text>Movie Name</Text>
+                        <br />
+                        <Text strong style={{ fontSize: "20px" }}>
+                          {SolrData.docs[0].movie_name}
+                        </Text>
                       </Text>
-                    </Text>
 
-                    <Text style={{ flex: 1, textAlign: "center" }}>
-                      <Text>Genres</Text>
-                      <br />
-                      <Text strong style={{ fontSize: "20px" }}>
-                        {SolrData.docs[0].genre}
+                      <Text style={{ flex: 1, textAlign: "center" }}>
+                        <Text>Genres</Text>
+                        <br />
+                        <Text strong style={{ fontSize: "20px" }}>
+                          {SolrData.docs[0].genre}
+                        </Text>
                       </Text>
-                    </Text>
 
-                    <Text style={{ flex: 1, textAlign: "center" }}>
-                      <Text>Release Date</Text>
-                      <br />
-                      <Text strong style={{ fontSize: "20px" }}>
-                        {formatDate(SolrData.docs[0].release_date[0])}
+                      <Text style={{ flex: 1, textAlign: "center" }}>
+                        <Text>Release Date</Text>
+                        <br />
+                        <Text strong style={{ fontSize: "20px" }}>
+                          {formatDate(SolrData.docs[0].release_date[0])}
+                        </Text>
                       </Text>
-                    </Text>
 
-                    <Text style={{ flex: 1, textAlign: "center" }}>
-                      <Text>Popularity</Text>
-                      <br />
-                      <Text strong style={{ fontSize: "20px" }}>
-                        {SolrData.docs[0].popularity}
+                      <Text style={{ flex: 1, textAlign: "center" }}>
+                        <Text>Popularity</Text>
+                        <br />
+                        <Text strong style={{ fontSize: "20px" }}>
+                          {SolrData.docs[0].popularity}
+                        </Text>
                       </Text>
-                    </Text>
 
-                    <Text style={{ flex: 1, textAlign: "center" }}>
-                      <Text>Vote</Text>
-                      <br />
-                      <Text strong style={{ fontSize: "20px" }}>
-                        {SolrData.docs[0].vote_average}
+                      <Text style={{ flex: 1, textAlign: "center" }}>
+                        <Text>Vote</Text>
+                        <br />
+                        <Text strong style={{ fontSize: "20px" }}>
+                          {SolrData.docs[0].vote_average}
+                        </Text>
                       </Text>
-                    </Text>
-                  </div>
-                </Card>
+                    </div>
+                  </Card>
+                ) : (
+                  <></>
+                )
               ) : (
                 <></>
               )}
