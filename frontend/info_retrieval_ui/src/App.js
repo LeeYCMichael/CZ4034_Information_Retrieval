@@ -519,7 +519,7 @@ function App() {
         ) : (
           <>
             <div className="left">
-              {SolrData.length !== 0 &&
+              {SolrData.docs.length > 0 &&
               AdvancedSearchMovie &&
               ShowAdvancedSearch ? (
                 <Card
