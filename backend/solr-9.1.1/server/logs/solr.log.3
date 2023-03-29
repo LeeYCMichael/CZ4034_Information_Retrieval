@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2023-03-22 13:22:23.319 INFO  (main) [] o.e.j.u.log Logging initialized @905ms to org.eclipse.jetty.util.log.Slf4jLog
 2023-03-22 13:22:23.483 INFO  (main) [] o.e.j.s.Server jetty-9.4.48.v20220622; built: 2022-06-21T20:42:25.880Z; git: 6b67c5719d1f4371b33655ff2d047d24e171e49a; jvm 18.0.2.1+1-1
 2023-03-22 13:22:23.783 INFO  (main) [] o.a.s.s.CoreContainerProvider Using logger factory org.apache.logging.slf4j.Log4jLoggerFactory
@@ -52,6 +53,62 @@
 2023-03-22 13:27:02.919 INFO  (qtp466853180-26) [ x:movie_db] o.a.s.c.S.Request webapp=/solr path=/query params={q=*:*&indent=true&fl=movie_name&q.op=AND&rows=3000&useParams=} hits=2139 status=0 QTime=3
 2023-03-22 13:27:32.854 INFO  (qtp466853180-24) [ x:movie_db] o.a.s.c.S.Request webapp=/solr path=/query params={q=*:*&indent=true&fl=movie_name&q.op=AND&rows=3000&useParams=} hits=2139 status=0 QTime=1
 2023-03-22 13:27:38.536 ERROR (qtp466853180-26) [ x:movie_db] o.a.s.h.RequestHandlerBase org.apache.solr.common.SolrException: org.apache.solr.search.SyntaxError: Cannot parse 'body:()movie_name:(*)': Encountered " ")" ") "" at line 1, column 6.
+=======
+2023-03-15 11:09:12.396 INFO  (main) [] o.e.j.u.log Logging initialized @878ms to org.eclipse.jetty.util.log.Slf4jLog
+2023-03-15 11:09:12.571 INFO  (main) [] o.e.j.s.Server jetty-9.4.48.v20220622; built: 2022-06-21T20:42:25.880Z; git: 6b67c5719d1f4371b33655ff2d047d24e171e49a; jvm 18.0.2.1+1-1
+2023-03-15 11:09:12.893 INFO  (main) [] o.a.s.s.CoreContainerProvider Using logger factory org.apache.logging.slf4j.Log4jLoggerFactory
+2023-03-15 11:09:12.901 INFO  (main) [] o.a.s.s.CoreContainerProvider  ___      _       Welcome to Apache Solr™ version 9.1.1
+2023-03-15 11:09:12.901 INFO  (main) [] o.a.s.s.CoreContainerProvider / __| ___| |_ _   Starting in standalone mode on port 8983
+2023-03-15 11:09:12.901 INFO  (main) [] o.a.s.s.CoreContainerProvider \__ \/ _ \ | '_|  Install dir: /Users/QianYi/Documents/GitHub/CZ4034_Information_Retrieval/backend/solr-9.1.1
+2023-03-15 11:09:12.901 INFO  (main) [] o.a.s.s.CoreContainerProvider |___/\___/_|_|    Start time: 2023-03-15T11:09:12.901900Z
+2023-03-15 11:09:12.906 INFO  (main) [] o.a.s.s.CoreContainerProvider Solr Home: /Users/QianYi/Documents/GitHub/CZ4034_Information_Retrieval/backend/solr-9.1.1/server/solr (source: system property: solr.solr.home)
+2023-03-15 11:09:12.907 INFO  (main) [] o.a.s.c.SolrXmlConfig Loading solr.xml from /Users/QianYi/Documents/GitHub/CZ4034_Information_Retrieval/backend/solr-9.1.1/server/solr/solr.xml
+2023-03-15 11:09:12.964 INFO  (main) [] o.a.s.c.SolrResourceLoader Added 1 libs to classloader, from paths: [/Users/QianYi/Documents/GitHub/CZ4034_Information_Retrieval/backend/solr-9.1.1/lib]
+2023-03-15 11:09:13.807 WARN  (main) [] o.a.s.u.StartupLoggingUtils Jetty request logging enabled. Will retain logs for last 3 days. See chapter "Configuring Logging" in reference guide for how to configure.
+2023-03-15 11:09:13.808 WARN  (main) [] o.a.s.c.CoreContainer Not all security plugins configured!  authentication=disabled authorization=disabled.  Solr is only as secure as you make it. Consider configuring authentication/authorization before exposing Solr to users internal or external.  See https://s.apache.org/solrsecurity for more info
+2023-03-15 11:09:13.931 INFO  (main) [] o.a.s.c.CorePropertiesLocator Found 1 core definitions underneath /Users/QianYi/Documents/GitHub/CZ4034_Information_Retrieval/backend/solr-9.1.1/server/solr
+2023-03-15 11:09:13.932 INFO  (main) [] o.a.s.c.CorePropertiesLocator Cores are: [movie_db]
+2023-03-15 11:09:13.933 INFO  (coreLoadExecutor-10-thread-1) [] o.a.s.c.TransientSolrCoreCacheDefault Allocating transient core cache for max 2147483647 cores with initial capacity of 1024
+2023-03-15 11:09:13.958 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.c.SolrConfig Using Lucene MatchVersion: 9.3.0
+2023-03-15 11:09:13.989 INFO  (main) [] o.e.j.s.h.ContextHandler Started o.e.j.w.WebAppContext@1568159{/solr,file:///Users/QianYi/Documents/GitHub/CZ4034_Information_Retrieval/backend/solr-9.1.1/server/solr-webapp/webapp/,AVAILABLE}{/Users/QianYi/Documents/GitHub/CZ4034_Information_Retrieval/backend/solr-9.1.1/server/solr-webapp/webapp}
+2023-03-15 11:09:13.996 INFO  (main) [] o.e.j.s.RequestLogWriter Opened /Users/QianYi/Documents/GitHub/CZ4034_Information_Retrieval/backend/solr-9.1.1/server/logs/2023_03_15.request.log
+2023-03-15 11:09:14.002 INFO  (main) [] o.e.j.s.AbstractConnector Started ServerConnector@4212a0c8{HTTP/1.1, (http/1.1, h2c)}{127.0.0.1:8983}
+2023-03-15 11:09:14.002 INFO  (main) [] o.e.j.s.Server Started @2486ms
+2023-03-15 11:09:14.011 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.s.IndexSchema Schema name=default-config
+2023-03-15 11:09:14.065 WARN  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.D.s.SynonymFilterFactory Solr loaded a deprecated plugin/analysis class [solr.SynonymFilterFactory]. Please consult documentation how to replace it accordingly.
+2023-03-15 11:09:14.204 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.s.IndexSchema Loaded schema default-config/1.6 with uniqueid field id
+2023-03-15 11:09:14.206 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.c.CoreContainer Creating SolrCore 'movie_db' using configuration from instancedir /Users/QianYi/Documents/GitHub/CZ4034_Information_Retrieval/backend/solr-9.1.1/server/solr/movie_db, trusted=true
+2023-03-15 11:09:14.233 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.c.SolrCore Opening new SolrCore at [/Users/QianYi/Documents/GitHub/CZ4034_Information_Retrieval/backend/solr-9.1.1/server/solr/movie_db], dataDir=[/Users/QianYi/Documents/GitHub/CZ4034_Information_Retrieval/backend/solr-9.1.1/server/solr/movie_db/data/]
+2023-03-15 11:09:14.583 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.u.UpdateHandler Using UpdateLog implementation: org.apache.solr.update.UpdateLog
+2023-03-15 11:09:14.583 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.u.UpdateLog Initializing UpdateLog: dataDir= defaultSyncLevel=FLUSH numRecordsToKeep=100 maxNumLogsToKeep=10 numVersionBuckets=65536
+2023-03-15 11:09:14.601 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.u.CommitTracker Hard AutoCommit: if uncommitted for 15000ms; 
+2023-03-15 11:09:14.602 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.u.CommitTracker Soft AutoCommit: disabled
+2023-03-15 11:09:14.702 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.r.ManagedResourceStorage File-based storage initialized to use dir: /Users/QianYi/Documents/GitHub/CZ4034_Information_Retrieval/backend/solr-9.1.1/server/solr/movie_db/conf
+2023-03-15 11:09:14.720 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.h.c.SpellCheckComponent Registering newSearcher listener for spellchecker: default
+2023-03-15 11:09:14.725 INFO  (coreLoadExecutor-10-thread-1) [ x:movie_db] o.a.s.h.ReplicationHandler Commits will be reserved for 10000 ms
+2023-03-15 11:09:14.736 INFO  (searcherExecutor-12-thread-1-processing-movie_db) [ x:movie_db] o.a.s.c.QuerySenderListener QuerySenderListener done.
+2023-03-15 11:09:14.736 INFO  (searcherExecutor-12-thread-1-processing-movie_db) [ x:movie_db] o.a.s.h.c.SpellCheckComponent Loading spell index for spellchecker: default
+2023-03-15 11:09:14.744 INFO  (searcherExecutor-12-thread-1-processing-movie_db) [ x:movie_db] o.a.s.c.SolrCore Registered new searcher autowarm time: 0 ms
+2023-03-15 11:09:21.495 INFO  (qtp466853180-23) [] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1678878561435} status=0 QTime=8
+2023-03-15 11:09:21.499 INFO  (qtp466853180-27) [] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1678878561436} status=0 QTime=13
+2023-03-15 11:09:21.510 INFO  (qtp466853180-26) [] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1678878561436} status=0 QTime=2
+2023-03-15 11:09:24.041 INFO  (qtp466853180-27) [] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1678878561435} status=0 QTime=0
+2023-03-15 11:09:24.044 INFO  (qtp466853180-24) [] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1678878561436} status=0 QTime=3
+2023-03-15 11:09:24.050 INFO  (qtp466853180-25) [ x:movie_db] o.a.s.c.S.Request webapp=/solr path=/admin/luke params={numTerms=0&show=index&wt=json&_=1678878564035} status=0 QTime=6
+2023-03-15 11:09:24.054 INFO  (qtp466853180-27) [ x:movie_db] o.a.s.c.S.Request webapp=/solr path=/admin/system params={wt=json&_=1678878564036} status=0 QTime=3
+2023-03-15 11:09:24.059 INFO  (qtp466853180-20) [ x:movie_db] o.a.s.c.S.Request webapp=/solr path=/admin/ping params={action=status&wt=json&_=1678878561436&ts=1678878561436} status=503 QTime=2
+2023-03-15 11:09:24.063 INFO  (qtp466853180-18) [ x:movie_db] o.a.s.c.S.Request webapp=/solr path=/replication params={wt=json&command=details&_=1678878564036} status=0 QTime=12
+2023-03-15 11:10:19.302 INFO  (qtp466853180-19) [] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1678878561435} status=0 QTime=0
+2023-03-15 11:10:19.307 INFO  (qtp466853180-23) [] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1678878561436} status=0 QTime=5
+2023-03-15 11:10:19.308 INFO  (qtp466853180-24) [ x:movie_db] o.a.s.c.S.Request webapp=/solr path=/config/params params={wt=json&_=1678878619291} status=0 QTime=6
+2023-03-15 11:10:20.870 INFO  (qtp466853180-25) [] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1678878561435} status=0 QTime=0
+2023-03-15 11:10:20.870 INFO  (qtp466853180-27) [ x:movie_db] o.a.s.c.S.Request webapp=/solr path=/config/params params={wt=json&_=1678878619291} status=0 QTime=0
+2023-03-15 11:10:20.874 INFO  (qtp466853180-42) [] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1678878561436} status=0 QTime=4
+2023-03-15 11:10:20.909 INFO  (qtp466853180-24) [ x:movie_db] o.a.s.c.S.Request webapp=/solr path=/select params={q=*:*&indent=true&q.op=OR&useParams=&_=1678878619290} hits=2139 status=0 QTime=37
+2023-03-15 11:11:49.313 INFO  (qtp466853180-24) [ x:movie_db] o.a.s.c.PluginBag Going to create a new requestHandler with {type = requestHandler,name = /spell,class = solr.SearchHandler,attributes = {startup=lazy, name=/spell, class=solr.SearchHandler},args = {defaults={spellcheck.dictionary=default, spellcheck=on, spellcheck.extendedResults=true, spellcheck.count=10, spellcheck.alternativeTermCount=5, spellcheck.maxResultsForSuggest=5, spellcheck.collate=true, spellcheck.collateExtendedResults=true, spellcheck.maxCollationTries=10, spellcheck.maxCollations=5, df=_text_}, last-components=[spellcheck]}} 
+2023-03-15 11:11:49.376 INFO  (qtp466853180-24) [ x:movie_db] o.a.s.c.S.Request webapp=/solr path=/spell params={q=body:(the+voyeurs)movie_name:(*)&facet.field=senticSubjectivity&facet.field=senticSentiment&indent=true&q.op=AND&rows=20&facet=true&facet.contains.ignoreCase=true&useParams=} hits=17 status=0 QTime=63
+2023-03-15 11:13:08.888 ERROR (qtp466853180-26) [ x:movie_db] o.a.s.h.RequestHandlerBase org.apache.solr.common.SolrException: org.apache.solr.search.SyntaxError: Cannot parse 'body:()movie_name:(*)': Encountered " ")" ") "" at line 1, column 6.
+>>>>>>> Mike_branch
 Was expecting one of:
     <NOT> ...
     "+" ...
@@ -203,6 +260,7 @@ Was expecting one of:
 	at org.apache.solr.search.QParser.getQuery(QParser.java:188) ~[?:?]
 	at org.apache.solr.handler.component.QueryComponent.prepare(QueryComponent.java:171) ~[?:?]
 	... 54 more
+<<<<<<< HEAD
 2023-03-22 13:27:38.537 INFO  (qtp466853180-26) [ x:movie_db] o.a.s.c.S.Request webapp=/solr path=/spell params={q=body:()movie_name:(*)&facet.field=senticSubjectivity&facet.field=senticSentiment&indent=true&q.op=AND&rows=20&facet=true&facet.contains.ignoreCase=true&useParams=} status=400 QTime=12
 2023-03-22 13:27:39.154 ERROR (qtp466853180-24) [ x:movie_db] o.a.s.h.RequestHandlerBase org.apache.solr.common.SolrException: org.apache.solr.search.SyntaxError: Cannot parse 'body:()movie_name:(*)': Encountered " ")" ") "" at line 1, column 6.
 Was expecting one of:
@@ -544,3 +602,8 @@ Was expecting one of:
 2023-03-22 13:38:04.118 INFO  (ShutdownMonitor) [] o.a.s.m.SolrMetricManager Closing metric reporters for registry=solr.jvm tag=null
 2023-03-22 13:38:04.122 INFO  (ShutdownMonitor) [] o.a.s.m.SolrMetricManager Closing metric reporters for registry=solr.jetty tag=null
 2023-03-22 13:38:04.130 INFO  (ShutdownMonitor) [] o.e.j.s.h.ContextHandler Stopped o.e.j.w.WebAppContext@1568159{/solr,null,STOPPED}{/Users/QianYi/Documents/GitHub/CZ4034_Information_Retrieval/backend/solr-9.1.1/server/solr-webapp/webapp}
+=======
+2023-03-15 11:13:08.888 INFO  (qtp466853180-26) [ x:movie_db] o.a.s.c.S.Request webapp=/solr path=/spell params={q=body:()movie_name:(*)&facet.field=senticSubjectivity&facet.field=senticSentiment&indent=true&q.op=AND&rows=20&facet=true&facet.contains.ignoreCase=true&useParams=} status=400 QTime=7
+2023-03-15 11:14:30.701 INFO  (qtp466853180-43) [ x:movie_db] o.a.s.c.S.Request webapp=/solr path=/spell params={q=body:(avatar)movie_name:(*)&facet.field=senticSubjectivity&facet.field=senticSentiment&indent=true&q.op=AND&rows=20&facet=true&facet.contains.ignoreCase=true&useParams=} hits=6 status=0 QTime=7
+2023-03-15 11:15:33.982 INFO  (qtp466853180-26) [ x:movie_db] o.a.s.c.S.Request webapp=/solr path=/spell params={q=body:(avatar)movie_name:(*)&facet.field=senticSubjectivity&facet.field=senticSentiment&indent=true&q.op=AND&rows=20&facet=true&facet.contains.ignoreCase=true&useParams=} hits=6 status=0 QTime=2
+>>>>>>> Mike_branch
