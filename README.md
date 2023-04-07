@@ -18,9 +18,11 @@
 
 **Commands to start the solr server**
 
-   a. cd solr-9.1.1/bin
+   a. cd backend
+   
+   b. cd solr-9.1.1/bin
 
-   b. Ensure you are in /bin and run solr start
+   c. Ensure you are in /bin and run solr start
    
 
 **Commands to use solr**
