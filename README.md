@@ -103,7 +103,13 @@
 
 - **Description:**
   - Contains results on test data for the subjectivity task from running the baseline BERT model over it
+ 
+`polarityClassificationResults.csv`
 
+- **Description:**
+  - Contains results on test data for the polarity task from running the baseline BERT model over it
+
+### Model Weights
 `BERT_subjectivity.pt`
 
 - **Description:**
@@ -125,6 +131,12 @@
 
 - **Description:**
   - Contains code for how a multonomial NB model was trained and evaluated. Code contains subsections for the subjectivity and polarity tasks.
+  
+`Word Embeddings.ipynb`
+
+- **Description:**
+  - Contains code for how a word embeddings model was trained and evaluated. Code contains subsections for the subjectivity and polarity tasks.
+  - File for pre-trained word vectors could be found here: https://nlp.stanford.edu/projects/glove/ under glove.6B.zip
 
 `BaselineBERT.ipynb`
 
@@ -132,3 +144,30 @@
   - Contains code for how a BERT model was trained and evaluated. Code contains subsections for the subjectivity and polarity tasks.
 
 ## Question 5
+### Data
+`BertBiLSTM_subjectivityClassificationResults.csv`
+
+- **Description:**
+  - Contains results on test data for the subjectivity task from running the BERT+Bi-LSTM model over it
+
+`BertBiLSTM_polarityClassificationResults.csv`
+
+- **Description:**
+  - Contains results on test data for the polarity task from running the BERT+Bi-LSTM model over it
+
+### Model Weights
+`subjectivityBertBiLSTM.pth`
+
+- **Description:**
+  -  BERT+Bi-LSTM weights for the subjectivity task
+
+`polarityBertBiLSTM.pth`
+
+- **Description:**
+  -  BERT+Bi-LSTM weights for the polarity task
+
+### Notebooks
+`BertLSTM_Final.ipynb`
+
+- **Description:**
+  - Contains code for how an end-2-end ensemble with BERT+Bi-LSTM model was trained and evaluated. Code contains subsections for the subjectivity and polarity tasks.
