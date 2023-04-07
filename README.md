@@ -62,9 +62,8 @@
     - is Banana Splits better than Willy Wonderland
   - A picture of a table containing the results from these queries are also incuded for quick reference
 
-## Question 3
 
-## Question 4
+## Question 3 and 4
 
 ### Data
 
@@ -136,7 +135,7 @@
 
 - **Description:**
   - Contains code for how a word embeddings model was trained and evaluated. Code contains subsections for the subjectivity and polarity tasks.
-  - File for pre-trained word vectors could be found here: https://nlp.stanford.edu/projects/glove/ under glove.6B.zip
+  - File "glove.6B.100d.txt" for pre-trained word vectors could be found here: https://nlp.stanford.edu/projects/glove/ under glove.6B.zip
 
 `BaselineBERT.ipynb`
 
@@ -171,3 +170,8 @@
 
 - **Description:**
   - Contains code for how an end-2-end ensemble with BERT+Bi-LSTM model was trained and evaluated. Code contains subsections for the subjectivity and polarity tasks.
+ 
+- **Environment Needed:**
+  - python version == 3.7.13
+  - transformers==3.0.0
+  - torch==1.8.1
