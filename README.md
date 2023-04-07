@@ -1,5 +1,40 @@
 # CZ4034_Information_Retrieval
 
+## Instructions for running frontend server
+
+1. Ensure that you have node installed by using the following command: node -v
+2. Ensure that you have npm installed by using the following command: npm -v
+3. Follow the following commands to start the application:
+
+   a. cd frontend
+
+   b. cd info_retrieval_ui
+
+   c. npm install
+
+   d. npm start
+
+## Instructions for running backend server
+
+**Commands to start the solr server**
+
+   a. cd solr-9.1.1/bin
+
+   b. Ensure you are in /bin and run solr start
+   
+
+**Commands to use solr**
+
+   a. Once Solr is running, navigate to http://localhost:8983/solr/#/
+
+   b. Under core selector, select movie_db. This is the core we have created and used for our IR system
+   
+   c. To test a query, under q specify field before search term Eg. body:batman
+   - For longer queries like is toy story good, do body:(is toy story good)
+   - To query in another field, do movie_name:batman 
+   - Switch q.op operand from AND to OR if needed
+   - To run spellcheck, in Request-Handler (qt), use /spell and tick spellcheeck checkbox, solr would return a list of suggested words along with their frequencies
+   
 ## Question 1
 
 `subredditScraper.ipynb`
