@@ -104,11 +104,13 @@
 
 - **Description:**
   - Contains results on test data for the subjectivity task from running the baseline BERT model over it
+  - '0' is for 'Objective', '1' is for 'Subjective'
  
 `polarityClassificationResults.csv`
 
 - **Description:**
   - Contains results on test data for the polarity task from running the baseline BERT model over it
+  - '0' is for 'Negative', '1' is for 'Positive', '2' is for 'Neutral'
 
 ### Model Weights
 `BERT_subjectivity.pt`
@@ -150,11 +152,13 @@
 
 - **Description:**
   - Contains results on test data for the subjectivity task from running the BERT+Bi-LSTM model over it
+  - '0' is for 'Objective', '1' is for 'Subjective'
 
 `BertBiLSTM_polarityClassificationResults.csv`
 
 - **Description:**
   - Contains results on test data for the polarity task from running the BERT+Bi-LSTM model over it
+  - '0' is for 'Negative', '1' is for 'Positive', '2' is for 'Neutral'
 
 ### Model Weights
 `subjectivityBertBiLSTM.pth`
